@@ -9,19 +9,23 @@ namespace Criipto.Signatures {
     public static class Utils {
         private static ConcurrentDictionary<string, Func<JToken, object>> ToObjectForTypenameCache = new ConcurrentDictionary<string, Func<JToken, object>>();
 
-        public static Func<JToken, object> GetToObjectMethodForTargetType(string typeName)
+        public static Func<JToken?, object> GetToObjectMethodForTargetType(string typeName)
         {
             if (!ToObjectForTypenameCache.ContainsKey(typeName))
             {
                 // Get the type corresponding to the typename
-                Type targetType = typeof(Types).Assembly
+                Type? targetType = typeof(Types).Assembly
                     .GetTypes()
                     .ToList()
                     .Where(t => t.Name == typeName)
                     .FirstOrDefault();
+
+                if (targetType == null) return null;
                 // Create a parametrised ToObject method using targetType as <TypeArgument>
                 var method = typeof(JToken).GetMethods()
                     .Where(m => m.Name == "ToObject" && m.IsGenericMethod && m.GetParameters().Length == 0).FirstOrDefault();
+
+                if (method == null) return null;
                 var genericMethod = method.MakeGenericMethod(targetType);
                 var toObject = (Func<JToken, object>)genericMethod.CreateDelegate(Expression.GetFuncType(typeof(JToken), typeof(object)));
                 ToObjectForTypenameCache[typeName] = toObject;
@@ -50,6 +54,7 @@ namespace Criipto.Signatures {
             }
             var typeName = loadedObject["__typename"].Value<string>();
             var toObject = Utils.GetToObjectMethodForTargetType(typeName);
+            if (toObject == null) return null;
             return toObject(loadedObject);
         }
         /// <inheritdoc />
@@ -87,6 +92,7 @@ namespace Criipto.Signatures {
                 }
                 var typeName = item["__typename"].Value<string>();
                 var toObject = Utils.GetToObjectMethodForTargetType(typeName);
+                if (toObject == null) continue;
                 object objectParsed = toObject(item);
                 list.Add(objectParsed);
             }

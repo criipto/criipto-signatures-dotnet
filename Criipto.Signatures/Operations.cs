@@ -79,4 +79,53 @@ namespace Criipto.Signatures {
       
     }
     
+
+    public class SignatureOrderWithDocumentsQuery {
+      /// <summary>
+      /// SignatureOrderWithDocumentsQuery.Request 
+      /// <para>Required variables:<br/> { id=(string) }</para>
+      /// <para>Optional variables:<br/> {  }</para>
+      /// </summary>
+      public static GraphQLRequest Request(object variables = null) {
+        return new GraphQLRequest {
+          Query = SignatureOrderWithDocumentsDocument,
+          OperationName = "signatureOrderWithDocuments",
+          Variables = variables
+        };
+      }
+
+      /// <remarks>This method is obsolete. Use Request instead.</remarks>
+      public static GraphQLRequest getSignatureOrderWithDocumentsQuery() {
+        return Request();
+      }
+      
+      public static string SignatureOrderWithDocumentsDocument = @"
+        query signatureOrderWithDocuments($id: ID!) {
+          signatureOrder(id: $id) {
+            status
+            signatories {
+              id
+              status
+            }
+            documents {
+              __typename
+              id
+              blob
+              signatures {
+                __typename
+                signatory {
+                  id
+                }
+                ... on JWTSignature {
+                  jwt
+                  jwks
+                }
+              }
+            }
+          }
+        }
+        ";
+      
+    }
+    
 }

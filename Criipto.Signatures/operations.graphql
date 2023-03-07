@@ -27,3 +27,32 @@ query signatureOrder($id: ID!) {
     }
   }
 }
+
+query signatureOrderWithDocuments($id: ID!) {
+  signatureOrder(id: $id) {
+    status
+
+    signatories {
+      id
+      status
+    }
+
+    documents {
+      __typename
+      id
+      blob
+
+      signatures {
+        __typename
+        signatory {
+            id
+        }
+
+        ... on JWTSignature {
+          jwt
+          jwks
+        }
+      }
+    }
+  }
+}
