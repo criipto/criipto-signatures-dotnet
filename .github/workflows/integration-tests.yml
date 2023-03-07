@@ -13,4 +13,7 @@ jobs:
         with:
           dotnet-version: '7.0.201'
       - run: dotnet test
-        working-directory: Criipto.Signatures.UnitTests
+        working-directory: Criipto.Signatures.IntegrationTests
+        env:
+          CRIIPTO_SIGNATURES_CLIENT_ID: ${{ secrets.CRIIPTO_SIGNATURES_CLIENT_ID }}
+          CRIIPTO_SIGNATURES_CLIENT_SECRET: ${{ secrets.CRIIPTO_SIGNATURES_CLIENT_SECRET }}

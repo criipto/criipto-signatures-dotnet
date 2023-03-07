@@ -895,7 +895,7 @@ namespace Criipto.Signatures {
     
     public interface Document {
       [JsonProperty("blob")]
-      string blob { get; set; }
+      byte[] blob { get; set; }
     
       [JsonProperty("id")]
       string id { get; set; }
@@ -1094,7 +1094,7 @@ namespace Criipto.Signatures {
     public class DrawableSignature : Signature {
       #region members
       [JsonProperty("image")]
-      public string image { get; set; }
+      public byte[] image { get; set; }
     
       [JsonProperty("name")]
       public string name { get; set; }
@@ -1512,7 +1512,7 @@ namespace Criipto.Signatures {
       #region members
       [Required]
       [JsonRequired]
-      public string blob { get; set; }
+      public byte[] blob { get; set; }
     
       /// <summary>
       /// Will not be displayed to signatories, can be used as a reference to your own system.
@@ -1589,7 +1589,7 @@ namespace Criipto.Signatures {
     public class PdfDocument : Document {
       #region members
       [JsonProperty("blob")]
-      public string blob { get; set; }
+      public byte[] blob { get; set; }
     
       [JsonProperty("id")]
       public string id { get; set; }
@@ -1862,7 +1862,7 @@ namespace Criipto.Signatures {
       #region members
       [Required]
       [JsonRequired]
-      public string image { get; set; }
+      public byte[] image { get; set; }
     
       public string name { get; set; }
       #endregion
