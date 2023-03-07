@@ -1,5 +1,3 @@
-57 lines (57 sloc)  1.75 KB
-
 on: [push]
 defaults:
   run:
