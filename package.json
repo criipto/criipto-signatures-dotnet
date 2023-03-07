@@ -1,0 +1,25 @@
+{
+  "name": "criipto-signatures-dotnet",
+  "private": true,
+  "version": "1.0.0",
+  "description": "A dotnet/C# SDK for Criipto Signatures",
+  "scripts": {
+    "codegen": "graphql-codegen && node fix-typings.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/criipto/criipto-signatures-dotnet.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/criipto/criipto-signatures-dotnet/issues"
+  },
+  "homepage": "https://github.com/criipto/criipto-signatures-dotnet#readme",
+  "devDependencies": {
+    "@graphql-codegen/c-sharp": "4.2.7",
+    "@graphql-codegen/c-sharp-operations": "2.2.7",
+    "@graphql-codegen/cli": "2.6.2",
+    "graphql": "16.3.0"
+  }
+}

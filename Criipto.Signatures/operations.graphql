@@ -1,0 +1,29 @@
+mutation createSignatureOrder ($input: CreateSignatureOrderInput!) {
+  createSignatureOrder(input: $input) {
+    signatureOrder {
+      id
+
+      documents {
+        __typename
+        id
+      }
+
+      signatories {
+        id
+        status
+      }
+    }
+  }
+}
+
+query signatureOrder($id: ID!) {
+  signatureOrder(id: $id) {
+    status
+
+    signatories {
+      id
+      status
+      href
+    }
+  }
+}
