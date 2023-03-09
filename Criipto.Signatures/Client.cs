@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 namespace Criipto.Signatures {
     public class CriiptoSignaturesClient : IDisposable {
         private GraphQLHttpClient graphQLClient;
+        private bool isDisposed;
 
         public CriiptoSignaturesClient(string clientId, string clientSecret, string endpoint = "https://signatures-api.criipto.com/v1/graphql") {
             graphQLClient = new GraphQLHttpClient(endpoint, new NewtonsoftJsonSerializer());
@@ -18,8 +19,16 @@ namespace Criipto.Signatures {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
         protected virtual void Dispose(bool disposing) {
-            graphQLClient.Dispose();
+            if (this.isDisposed) return;
+
+            if (disposing)
+            {
+                this.graphQLClient.Dispose();
+            }
+
+            this.isDisposed = true;
         }
     }
 }
