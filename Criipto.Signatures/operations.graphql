@@ -16,6 +16,16 @@ mutation createSignatureOrder ($input: CreateSignatureOrderInput!) {
   }
 }
 
+mutation addSignatory ($input: AddSignatoryInput!) {
+  addSignatory(input: $input) {
+    signatory {
+      id
+      status
+      href
+    }
+  }
+}
+
 query signatureOrder($id: ID!) {
   signatureOrder(id: $id) {
     status
