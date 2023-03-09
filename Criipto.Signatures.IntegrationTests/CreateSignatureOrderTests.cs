@@ -22,11 +22,15 @@ public class CreateSignatureOrderTests
     {
         using (var client = new CriiptoSignaturesClient("invalid", "invalid"))
         {
-            var exn = await Assert.ThrowsAsync<GraphQLException>(() => client.CreateSignatureOrder(new Types.CreateSignatureOrderInput()
-            {
-                title = "Title",
-                documents = new List<Types.DocumentInput>()
-            }));
+            var exn = await Assert.ThrowsAsync<GraphQLException>(() =>
+                client.CreateSignatureOrder(
+                    new Types.CreateSignatureOrderInput()
+                    {
+                        title = "Title",
+                        documents = new List<Types.DocumentInput>()
+                    }
+                )
+            );
             Assert.Equal("Unauthorized access", exn.Message);
         }
     }
@@ -36,18 +40,25 @@ public class CreateSignatureOrderTests
     {
         using (var client = new CriiptoSignaturesClient(CLIENT_ID, CLIENT_SECRET))
         {
-            var exn = await Assert.ThrowsAsync<GraphQLException>(() => client.CreateSignatureOrder(new Types.CreateSignatureOrderInput()
-            {
-                title = "Title",
-                documents = new List<Types.DocumentInput>(){
-                    new Types.DocumentInput {
-                        pdf = new Types.PadesDocumentInput {
-                            title = "TEST",
-                            blob = new byte[0]
+            var exn = await Assert.ThrowsAsync<GraphQLException>(() =>
+                client.CreateSignatureOrder(
+                    new Types.CreateSignatureOrderInput()
+                    {
+                        title = "Title",
+                        documents = new List<Types.DocumentInput>()
+                        {
+                            new Types.DocumentInput {
+                                pdf =
+                                    new Types.PadesDocumentInput
+                                    {
+                                        title = "TEST",
+                                        blob = new byte[0]
+                                    }
+                            }
                         }
                     }
-                }
-            }));
+                )
+            );
             Assert.Equal("Document TEST does not appear to be a PDF", exn.Message);
         }
     }
@@ -57,19 +68,23 @@ public class CreateSignatureOrderTests
     {
         using (var client = new CriiptoSignaturesClient(CLIENT_ID, CLIENT_SECRET))
         {
-            var signatureOrder = await client.CreateSignatureOrder(new Types.CreateSignatureOrderInput()
-            {
-                title = "Title",
-                expiresInDays = 1,
-                documents = new List<Types.DocumentInput>(){
-                    new Types.DocumentInput {
-                        pdf = new Types.PadesDocumentInput {
-                            title = "TEST",
-                            blob = Sample
+            var signatureOrder = await client.CreateSignatureOrder(
+                new Types.CreateSignatureOrderInput()
+                {
+                    title = "Title",
+                    expiresInDays = 1,
+                    documents = new List<Types.DocumentInput>(){
+                        new Types.DocumentInput {
+                            pdf =
+                                new Types.PadesDocumentInput
+                                {
+                                    title = "TEST",
+                                    blob = Sample
+                                }
                         }
                     }
                 }
-            });
+            );
 
             Assert.NotNull(signatureOrder?.id);
         }
