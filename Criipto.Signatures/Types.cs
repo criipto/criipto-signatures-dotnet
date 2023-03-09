@@ -16,6 +16,7 @@
 #pragma warning disable CA1707
 #pragma warning disable CA1720
 #pragma warning disable CA1052
+#pragma warning disable CA1819
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
