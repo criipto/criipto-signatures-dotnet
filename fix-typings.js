@@ -1,4 +1,13 @@
 const fs = require('fs');
+const typesSupressions = `#pragma warning disable CS8601
+#pragma warning disable CS8603
+#pragma warning disable CS8604 
+#pragma warning disable CS8618
+#pragma warning disable CS8619
+#pragma warning disable CS0111`;
+
+const operationsSupressions = `#pragma warning disable CS8625`;
+
 
 let types = fs.readFileSync(__dirname + '/Criipto.Signatures/Types.cs').toString();
 
@@ -21,4 +30,9 @@ for (const compositionType of compositionTypes) {
 types = types.replace(/List\<SignatureEvidenceProvider\>/g, 'List<object>');
 types = types.replace(/public SignatureEvidenceProvider/g, 'public object');
 
+types = typesSupressions + '\n\n' + types;
 fs.writeFileSync(__dirname + '/Criipto.Signatures/Types.cs', types);
+
+let operations = fs.readFileSync(__dirname + '/Criipto.Signatures/Operations.cs').toString();
+operations = operationsSupressions + '\n\n' + operations;
+fs.writeFileSync(__dirname + '/Criipto.Signatures/Operations.cs', operations);

@@ -7,9 +7,9 @@ using Newtonsoft.Json.Linq;
 
 namespace Criipto.Signatures {
     public static class Utils {
-        private static ConcurrentDictionary<string, Func<JToken, object>> ToObjectForTypenameCache = new ConcurrentDictionary<string, Func<JToken, object>>();
+        private static readonly ConcurrentDictionary<string, Func<JToken, object>> ToObjectForTypenameCache = new ();
 
-        public static Func<JToken?, object> GetToObjectMethodForTargetType(string typeName)
+        public static Func<JToken?, object>? GetToObjectMethodForTargetType(string typeName)
         {
             if (!ToObjectForTypenameCache.ContainsKey(typeName))
             {
@@ -30,7 +30,7 @@ namespace Criipto.Signatures {
                 var toObject = (Func<JToken, object>)genericMethod.CreateDelegate(Expression.GetFuncType(typeof(JToken), typeof(object)));
                 ToObjectForTypenameCache[typeName] = toObject;
             }
-            return ToObjectForTypenameCache[typeName];
+            return (Func<JToken?, object>)ToObjectForTypenameCache[typeName];
         }
     }
 
@@ -40,19 +40,18 @@ namespace Criipto.Signatures {
     public class CompositionTypeConverter : JsonConverter
     {
         /// <inheritdoc />
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
         {
-            if (reader.TokenType == JsonToken.Null)
-            {
-             return null;
-            }
+            if (reader.TokenType == JsonToken.Null) return null;
             var loadedObject = JObject.Load(reader);
+            if (loadedObject == null) return null;
             var typeNameObject = loadedObject["__typename"];
             if (typeNameObject == null)
             {
                 throw new JsonSerializationException($"CompositionTypeConverter Exception: missing __typeName field when parsing {objectType.Name}. Requesting the __typename field is required for converting Composition Types");
             }
-            var typeName = loadedObject["__typename"].Value<string>();
+            var typeName = loadedObject["__typename"]?.Value<string>();
+            if (typeName == null) return null;
             var toObject = Utils.GetToObjectMethodForTargetType(typeName);
             if (toObject == null) return null;
             return toObject(loadedObject);
@@ -63,7 +62,7 @@ namespace Criipto.Signatures {
             throw new NotImplementedException();
         }
         /// <inheritdoc />
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
         {
             throw new NotImplementedException("Tried to write a GQL Composition type to JSON");
         }
@@ -75,14 +74,12 @@ namespace Criipto.Signatures {
     public class CompositionTypeListConverter : JsonConverter
     {
         /// <inheritdoc />
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
         {
-            if (reader.TokenType == JsonToken.Null)
-            {
-                return null;
-            }
+            if (reader.TokenType == JsonToken.Null) return null;
             var items = JArray.Load(reader).Children();
             var list = Activator.CreateInstance(objectType) as IList;
+            if (list == null) return null;
             foreach (var item in items)
             {
                 var typeNameObject = item["__typename"];
@@ -90,7 +87,8 @@ namespace Criipto.Signatures {
                 {
                     throw new JsonSerializationException($"CompositionTypeListConverter Exception: missing __typeName field when parsing {objectType.Name}. Requesting the __typename field is required for converting Composition Types");
                 }
-                var typeName = item["__typename"].Value<string>();
+                var typeName = item["__typename"]?.Value<string>();
+                if (typeName == null) return null;
                 var toObject = Utils.GetToObjectMethodForTargetType(typeName);
                 if (toObject == null) continue;
                 object objectParsed = toObject(item);
@@ -104,7 +102,7 @@ namespace Criipto.Signatures {
             throw new NotImplementedException();
         }
         /// <inheritdoc />
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
         {
             throw new NotImplementedException("Tried to write a GQL Composition type list to JSON");
         }
