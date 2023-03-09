@@ -7,8 +7,8 @@ public class CriiptoSignaturesClientTests
     [Fact]
     public void IsDisposable()
     {
-        var client = new CriiptoSignaturesClient("invalid", "invalid");
-
-        client.Dispose();
+        using (var client = new CriiptoSignaturesClient("invalid", "invalid")) {
+            
+        }
     }
 }
