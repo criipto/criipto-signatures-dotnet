@@ -17,7 +17,8 @@ const typesSupressions = [
   'CA1056',
   'CA1707',
   'CA1720',
-  'CA1052'
+  'CA1052',
+  'CA1819'
 ]
 
 const operationsSupressions = [
