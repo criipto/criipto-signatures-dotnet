@@ -1,3 +1,6 @@
+#pragma warning disable CS8625
+#pragma warning disable CA1052
+#pragma warning disable CA2211
 using System;
 using Newtonsoft.Json;
 using GraphQL;

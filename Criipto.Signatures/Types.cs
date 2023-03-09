@@ -1,3 +1,21 @@
+#pragma warning disable CS8601
+#pragma warning disable CS8603
+#pragma warning disable CS8604
+#pragma warning disable CS8618
+#pragma warning disable CS8619
+#pragma warning disable CS0111
+#pragma warning disable CA1507
+#pragma warning disable CA1715
+#pragma warning disable CA1724
+#pragma warning disable CA1062
+#pragma warning disable CA2227
+#pragma warning disable CA1724
+#pragma warning disable CA1002
+#pragma warning disable CA1034
+#pragma warning disable CA1056
+#pragma warning disable CA1707
+#pragma warning disable CA1720
+#pragma warning disable CA1052
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
