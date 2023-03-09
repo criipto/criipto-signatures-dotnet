@@ -11,7 +11,8 @@ public class CreateSignatureOrderTests
     public static byte[] Sample = File.ReadAllBytes("./sample.pdf");
 
     [Fact]
-    public void ClientCredentialsSet() {
+    public void ClientCredentialsSet()
+    {
         Assert.NotNull(CLIENT_ID);
         Assert.NotNull(CLIENT_SECRET);
     }
@@ -21,7 +22,8 @@ public class CreateSignatureOrderTests
     {
         using (var client = new CriiptoSignaturesClient("invalid", "invalid"))
         {
-            var exn = await Assert.ThrowsAsync<GraphQLException>(() => client.CreateSignatureOrder(new Types.CreateSignatureOrderInput() {
+            var exn = await Assert.ThrowsAsync<GraphQLException>(() => client.CreateSignatureOrder(new Types.CreateSignatureOrderInput()
+            {
                 title = "Title",
                 documents = new List<Types.DocumentInput>()
             }));
@@ -30,10 +32,12 @@ public class CreateSignatureOrderTests
     }
 
     [Fact]
-    public async void MutationThrowsValidationError() {
+    public async void MutationThrowsValidationError()
+    {
         using (var client = new CriiptoSignaturesClient(CLIENT_ID, CLIENT_SECRET))
         {
-            var exn = await Assert.ThrowsAsync<GraphQLException>(() => client.CreateSignatureOrder(new Types.CreateSignatureOrderInput() {
+            var exn = await Assert.ThrowsAsync<GraphQLException>(() => client.CreateSignatureOrder(new Types.CreateSignatureOrderInput()
+            {
                 title = "Title",
                 documents = new List<Types.DocumentInput>(){
                     new Types.DocumentInput {
@@ -49,10 +53,12 @@ public class CreateSignatureOrderTests
     }
 
     [Fact]
-    public async void MutationReturnsSignatureOrder() {
+    public async void MutationReturnsSignatureOrder()
+    {
         using (var client = new CriiptoSignaturesClient(CLIENT_ID, CLIENT_SECRET))
         {
-            var signatureOrder = await client.CreateSignatureOrder(new Types.CreateSignatureOrderInput() {
+            var signatureOrder = await client.CreateSignatureOrder(new Types.CreateSignatureOrderInput()
+            {
                 title = "Title",
                 expiresInDays = 1,
                 documents = new List<Types.DocumentInput>(){
