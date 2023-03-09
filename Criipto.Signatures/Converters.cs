@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿#pragma warning disable CA1062
+
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Collections.Concurrent;
