@@ -51,6 +51,8 @@ public class CriiptoSignaturesClient : IDisposable
 
     public async Task<Types.SignatureOrder> CreateSignatureOrder(Types.CreateSignatureOrderInput input)
     {
+        if (input == null) throw new ArgumentNullException(nameof(input));
+
         var response = await graphQLClient.SendMutationAsync(
             CreateSignatureOrderMutation.Request(new { input = input }),
             () => new { createSignatureOrder = new Types.CreateSignatureOrderOutput() }
@@ -62,5 +64,56 @@ public class CriiptoSignaturesClient : IDisposable
         }
 
         return response.Data.createSignatureOrder.signatureOrder;
+    }
+
+    public async Task<Types.Signatory> AddSignatory(Types.AddSignatoryInput input)
+    {
+        var response = await graphQLClient.SendMutationAsync(
+            AddSignatoryMutation.Request(new { input = input }),
+            () => new { addSignatory = new Types.AddSignatoryOutput() }
+        ).ConfigureAwait(false);
+
+        if (response.Errors?.Length > 0)
+        {
+            throw new GraphQLException(response.Errors[0].Message);
+        }
+
+        return response.Data.addSignatory.signatory;
+    }
+
+    public async Task<Types.Signatory> AddSignatory(Types.SignatureOrder signatureOrder)
+    {
+        if (signatureOrder == null) throw new ArgumentNullException(nameof(signatureOrder));
+
+        var input = new Types.AddSignatoryInput();
+        input.signatureOrderId = signatureOrder.id;
+        return await AddSignatory(input).ConfigureAwait(false);
+    }
+
+    public async Task<Types.Signatory> AddSignatory(Types.SignatureOrder signatureOrder, Types.AddSignatoryInput input)
+    {
+        if (signatureOrder == null) throw new ArgumentNullException(nameof(signatureOrder));
+        if (input == null) throw new ArgumentNullException(nameof(input));
+
+        input.signatureOrderId = signatureOrder.id;
+        return await AddSignatory(input).ConfigureAwait(false);
+    }
+
+    public async Task<Types.Signatory> AddSignatory(string signatureOrderId)
+    {
+        if (signatureOrderId == null) throw new ArgumentNullException(nameof(signatureOrderId));
+
+        var input = new Types.AddSignatoryInput();
+        input.signatureOrderId = signatureOrderId;
+        return await AddSignatory(input).ConfigureAwait(false);
+    }
+
+    public async Task<Types.Signatory> AddSignatory(string signatureOrderId, Types.AddSignatoryInput input)
+    {
+        if (signatureOrderId == null) throw new ArgumentNullException(nameof(signatureOrderId));
+        if (input == null) throw new ArgumentNullException(nameof(input));
+
+        input.signatureOrderId = signatureOrderId;
+        return await AddSignatory(input).ConfigureAwait(false);
     }
 }
