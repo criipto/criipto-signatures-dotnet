@@ -116,4 +116,55 @@ public class CriiptoSignaturesClient : IDisposable
         input.signatureOrderId = signatureOrderId;
         return await AddSignatory(input).ConfigureAwait(false);
     }
+
+    public async Task<Types.SignatureOrder> CloseSignatureOrder(Types.CloseSignatureOrderInput input)
+    {
+        var response = await graphQLClient.SendMutationAsync(
+            CloseSignatureOrderMutation.Request(new { input = input }),
+            () => new { closeSignatureOrder = new Types.CloseSignatureOrderOutput() }
+        ).ConfigureAwait(false);
+
+        if (response.Errors?.Length > 0)
+        {
+            throw new GraphQLException(response.Errors[0].Message);
+        }
+
+        return response.Data.closeSignatureOrder.signatureOrder;
+    }
+
+    public async Task<Types.SignatureOrder> CloseSignatureOrder(Types.SignatureOrder signatureOrder)
+    {
+        if (signatureOrder == null) throw new ArgumentNullException(nameof(signatureOrder));
+
+        var input = new Types.CloseSignatureOrderInput();
+        input.signatureOrderId = signatureOrder.id;
+        return await CloseSignatureOrder(input).ConfigureAwait(false);
+    }
+
+    public async Task<Types.SignatureOrder> CloseSignatureOrder(Types.SignatureOrder signatureOrder, Types.CloseSignatureOrderInput input)
+    {
+        if (signatureOrder == null) throw new ArgumentNullException(nameof(signatureOrder));
+        if (input == null) throw new ArgumentNullException(nameof(input));
+
+        input.signatureOrderId = signatureOrder.id;
+        return await CloseSignatureOrder(input).ConfigureAwait(false);
+    }
+
+    public async Task<Types.SignatureOrder> CloseSignatureOrder(string signatureOrderId)
+    {
+        if (signatureOrderId == null) throw new ArgumentNullException(nameof(signatureOrderId));
+
+        var input = new Types.CloseSignatureOrderInput();
+        input.signatureOrderId = signatureOrderId;
+        return await CloseSignatureOrder(input).ConfigureAwait(false);
+    }
+
+    public async Task<Types.SignatureOrder> CloseSignatureOrder(string signatureOrderId, Types.CloseSignatureOrderInput input)
+    {
+        if (signatureOrderId == null) throw new ArgumentNullException(nameof(signatureOrderId));
+        if (input == null) throw new ArgumentNullException(nameof(input));
+
+        input.signatureOrderId = signatureOrderId;
+        return await CloseSignatureOrder(input).ConfigureAwait(false);
+    }
 }
