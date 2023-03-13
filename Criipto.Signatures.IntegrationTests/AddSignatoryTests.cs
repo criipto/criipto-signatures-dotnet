@@ -6,21 +6,11 @@ namespace Criipto.Signatures.IntegrationTests;
 
 public class AddSignatoryTests
 {
-    public static string CLIENT_ID = System.Environment.GetEnvironmentVariable("CRIIPTO_SIGNATURES_CLIENT_ID")!;
-    public static string CLIENT_SECRET = System.Environment.GetEnvironmentVariable("CRIIPTO_SIGNATURES_CLIENT_SECRET")!;
-    public static byte[] Sample = File.ReadAllBytes("./sample.pdf");
-
-    [Fact]
-    public void ClientCredentialsSet()
-    {
-        Assert.NotNull(CLIENT_ID);
-        Assert.NotNull(CLIENT_SECRET);
-    }
 
     [Fact]
     public async void MutationReturnsSignatory()
     {
-        using (var client = new CriiptoSignaturesClient(CLIENT_ID, CLIENT_SECRET))
+        using (var client = new CriiptoSignaturesClient(Dsl.CLIENT_ID, Dsl.CLIENT_SECRET))
         {
             // Arrange
             var signatureOrder = await client.CreateSignatureOrder(
@@ -34,7 +24,7 @@ public class AddSignatoryTests
                                 new Types.PadesDocumentInput
                                 {
                                     title = "TEST",
-                                    blob = Sample
+                                    blob = Dsl.Sample
                                 }
                         }
                     }
@@ -48,6 +38,7 @@ public class AddSignatoryTests
 
             // Assert
             Assert.NotNull(signatory?.id);
+            Assert.NotNull(signatory?.href);
         }
     }
 }
