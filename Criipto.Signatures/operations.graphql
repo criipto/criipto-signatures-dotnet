@@ -1,4 +1,4 @@
-mutation createSignatureOrder ($input: CreateSignatureOrderInput!) {
+mutation createSignatureOrder($input: CreateSignatureOrderInput!) {
   createSignatureOrder(input: $input) {
     signatureOrder {
       id
@@ -16,12 +16,42 @@ mutation createSignatureOrder ($input: CreateSignatureOrderInput!) {
   }
 }
 
-mutation addSignatory ($input: AddSignatoryInput!) {
+mutation addSignatory($input: AddSignatoryInput!) {
   addSignatory(input: $input) {
     signatory {
       id
       status
       href
+    }
+  }
+}
+
+mutation closeSignatureOrder($input: CloseSignatureOrderInput!) {
+  closeSignatureOrder(input: $input) {
+    signatureOrder {
+      id
+      signatories {
+        id
+        status
+        downloadHref
+      }
+      documents {
+        __typename
+        id
+        blob
+
+        signatures {
+          __typename
+          signatory {
+            id
+          }
+
+          ... on JWTSignature {
+            jwt
+            jwks
+          }
+        }
+      }
     }
   }
 }
@@ -34,6 +64,7 @@ query signatureOrder($id: ID!) {
       id
       status
       href
+      downloadHref
     }
   }
 }
@@ -45,6 +76,8 @@ query signatureOrderWithDocuments($id: ID!) {
     signatories {
       id
       status
+      href
+      downloadHref
     }
 
     documents {
@@ -55,7 +88,7 @@ query signatureOrderWithDocuments($id: ID!) {
       signatures {
         __typename
         signatory {
-            id
+          id
         }
 
         ... on JWTSignature {

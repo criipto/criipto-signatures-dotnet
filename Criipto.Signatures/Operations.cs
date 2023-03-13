@@ -82,6 +82,58 @@ namespace Criipto.Signatures {
     }
     
 
+    public class CloseSignatureOrderMutation {
+      /// <summary>
+      /// CloseSignatureOrderMutation.Request 
+      /// <para>Required variables:<br/> { input=(CloseSignatureOrderInput) }</para>
+      /// <para>Optional variables:<br/> {  }</para>
+      /// </summary>
+      public static GraphQLRequest Request(object variables = null) {
+        return new GraphQLRequest {
+          Query = CloseSignatureOrderDocument,
+          OperationName = "closeSignatureOrder",
+          Variables = variables
+        };
+      }
+
+      /// <remarks>This method is obsolete. Use Request instead.</remarks>
+      public static GraphQLRequest getCloseSignatureOrderMutation() {
+        return Request();
+      }
+      
+      public static string CloseSignatureOrderDocument = @"
+        mutation closeSignatureOrder($input: CloseSignatureOrderInput!) {
+          closeSignatureOrder(input: $input) {
+            signatureOrder {
+              id
+              signatories {
+                id
+                status
+                downloadHref
+              }
+              documents {
+                __typename
+                id
+                blob
+                signatures {
+                  __typename
+                  signatory {
+                    id
+                  }
+                  ... on JWTSignature {
+                    jwt
+                    jwks
+                  }
+                }
+              }
+            }
+          }
+        }
+        ";
+      
+    }
+    
+
     public class SignatureOrderQuery {
       /// <summary>
       /// SignatureOrderQuery.Request 
@@ -109,6 +161,7 @@ namespace Criipto.Signatures {
               id
               status
               href
+              downloadHref
             }
           }
         }
@@ -143,6 +196,8 @@ namespace Criipto.Signatures {
             signatories {
               id
               status
+              href
+              downloadHref
             }
             documents {
               __typename

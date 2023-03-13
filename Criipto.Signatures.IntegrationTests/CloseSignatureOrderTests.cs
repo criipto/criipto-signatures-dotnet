@@ -4,11 +4,10 @@ using System.Collections.Generic;
 using System.IO;
 namespace Criipto.Signatures.IntegrationTests;
 
-public class AddSignatoryTests
+public class CloseSignatureOrderTests
 {
-
     [Fact]
-    public async void MutationReturnsSignatory()
+    public async void MutationReturnsSignatureOrder()
     {
         using (var client = new CriiptoSignaturesClient(Dsl.CLIENT_ID, Dsl.CLIENT_SECRET))
         {
@@ -32,13 +31,12 @@ public class AddSignatoryTests
             );
 
             // Act
-            var signatory = await client.AddSignatory(
+            var actual = await client.CloseSignatureOrder(
                 signatureOrder
             );
 
             // Assert
-            Assert.NotNull(signatory?.id);
-            Assert.NotNull(signatory?.href);
+            Assert.NotNull(actual?.id);
         }
     }
 }
