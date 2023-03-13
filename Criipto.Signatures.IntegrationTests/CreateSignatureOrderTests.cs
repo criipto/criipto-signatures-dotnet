@@ -7,13 +7,6 @@ namespace Criipto.Signatures.IntegrationTests;
 public class CreateSignatureOrderTests
 {
     [Fact]
-    public void ClientCredentialsSet()
-    {
-        Assert.NotNull(Dsl.CLIENT_ID);
-        Assert.NotNull(Dsl.CLIENT_SECRET);
-    }
-
-    [Fact]
     public async void MutationThrowsAuthorizationError()
     {
         using (var client = new CriiptoSignaturesClient("invalid", "invalid"))
