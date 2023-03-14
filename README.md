@@ -20,3 +20,37 @@ dotnet add package Criipto.Signatures
 ```csharp
 var client = new CriiptoSignaturesClient("{YOUR_CRIIPTO_CLIENT_ID}", "{YOUR_CRIIPTO_CLIENT_SECRET}");
 ```
+
+## Basic example
+
+```csharp
+using Criipto.Signatures;
+
+using (var client = new CriiptoSignaturesClient("{YOUR_CRIIPTO_CLIENT_ID}", "{YOUR_CRIIPTO_CLIENT_SECRET}")) {
+    // Setup document input
+    var documents = new List<Types.DocumentInput>{
+        new Types.DocumentInput {
+            pdf = new Types.PadesDocumentInput {
+                title = "Dotnet Sample",
+                blob = pdf,
+                storageMode = Types.DocumentStorageMode.Temporary
+            }
+        }
+    };
+
+    // Setup signature order input
+    var createSignatureOrderInput = new Types.CreateSignatureOrderInput
+    {
+        title = "Dotnet Sample",
+        documents = documents
+    };
+
+    // Create signature order
+    var signatureOrder = await client.CreateSignatureOrder(createSignatureOrderInput);
+
+    // Add signatory to signature order
+    var addSignatory = await client.AddSignatory(signatureOrder);
+
+    Console.WriteLine(addSignatory.href);
+}
+```
