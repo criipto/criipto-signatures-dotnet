@@ -2008,7 +2008,7 @@ namespace Criipto.Signatures {
       public string downloadHref { get; set; }
     
       [JsonProperty("evidenceProviders")]
-      public List<object> evidenceProviders { get; set; }
+      public List<SignatureEvidenceProvider> evidenceProviders { get; set; }
     
       /// <summary>
       /// A link to the signatures frontend, you can send this link to your users to enable them to sign your documents.
@@ -2256,7 +2256,7 @@ namespace Criipto.Signatures {
       public SignatoryViewerDownload download { get; set; }
     
       [JsonProperty("evidenceProviders")]
-      public List<object> evidenceProviders { get; set; }
+      public List<SignatureEvidenceProvider> evidenceProviders { get; set; }
     
       [JsonProperty("id")]
       public string id { get; set; }
@@ -2289,7 +2289,7 @@ namespace Criipto.Signatures {
       public bool expired { get; set; }
     
       [JsonProperty("verificationEvidenceProvider")]
-      public object verificationEvidenceProvider { get; set; }
+      public SignatureEvidenceProvider verificationEvidenceProvider { get; set; }
     
       [JsonProperty("verificationRequired")]
       public bool verificationRequired { get; set; }
@@ -2429,7 +2429,7 @@ namespace Criipto.Signatures {
       public List<Document> documents { get; set; }
     
       [JsonProperty("evidenceProviders")]
-      public List<object> evidenceProviders { get; set; }
+      public List<SignatureEvidenceProvider> evidenceProviders { get; set; }
     
       [JsonProperty("expiresAt")]
       public string expiresAt { get; set; }
@@ -2656,7 +2656,7 @@ namespace Criipto.Signatures {
       public SignatoryViewerDownload download { get; set; }
     
       [JsonProperty("evidenceProviders")]
-      public List<object> evidenceProviders { get; set; }
+      public List<SignatureEvidenceProvider> evidenceProviders { get; set; }
     
       [JsonProperty("id")]
       public string id { get; set; }

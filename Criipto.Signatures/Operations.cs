@@ -40,6 +40,21 @@ namespace Criipto.Signatures {
                 id
                 status
               }
+              evidenceProviders {
+                __typename
+                ... on NoopSignatureEvidenceProvider {
+                  id
+                }
+                ... on OidcJWTSignatureEvidenceProvider {
+                  id
+                }
+                ... on CriiptoVerifySignatureEvidenceProvider {
+                  id
+                }
+                ... on DrawableSignatureEvidenceProvider {
+                  id
+                }
+              }
             }
           }
         }
