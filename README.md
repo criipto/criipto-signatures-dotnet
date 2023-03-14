@@ -52,5 +52,35 @@ using (var client = new CriiptoSignaturesClient("{YOUR_CRIIPTO_CLIENT_ID}", "{YO
     var addSignatory = await client.AddSignatory(signatureOrder);
 
     Console.WriteLine(addSignatory.href);
+
+    // ... after signing
+    // Close signature order
+    var closedSignatureOrder = await client.CloseSignatureOrder(signatureOrder);
+}
+```
+
+## Methods
+
+### QuerySignatureOrder
+
+Will return a `Types.SignatureOrder` or null if signature order does not exist.
+
+```csharp
+using Criipto.Signatures;
+
+using (var client = new CriiptoSignaturesClient("{YOUR_CRIIPTO_CLIENT_ID}", "{YOUR_CRIIPTO_CLIENT_SECRET}")) {
+    var signatureOrder = await client.QuerySignatureOrder("{... signatureOrder id ..."});
+}
+```
+
+### QuerySignatory
+
+Will return a `Types.Signatory` or null if signatory does not exist.
+
+```csharp
+using Criipto.Signatures;
+
+using (var client = new CriiptoSignaturesClient("{YOUR_CRIIPTO_CLIENT_ID}", "{YOUR_CRIIPTO_CLIENT_SECRET}")) {
+    var signatureOrder = await client.QuerySignatory("{... signatory id ..."});
 }
 ```
