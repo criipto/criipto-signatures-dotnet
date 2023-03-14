@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Criipto.Signatures.UnitTest
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Criipto.Signatures.IntegrationTests", "Criipto.Signatures.IntegrationTests\Criipto.Signatures.IntegrationTests.csproj", "{6C0AB26B-8CF3-46F6-9509-3B3BE6BE47C9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Criipto.Signatures.ConsoleExample", "Criipto.Signatures.ConsoleExample\Criipto.Signatures.ConsoleExample.csproj", "{486D0F2E-F20E-4C18-A7AD-800B353EADE2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{6C0AB26B-8CF3-46F6-9509-3B3BE6BE47C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C0AB26B-8CF3-46F6-9509-3B3BE6BE47C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6C0AB26B-8CF3-46F6-9509-3B3BE6BE47C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{486D0F2E-F20E-4C18-A7AD-800B353EADE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{486D0F2E-F20E-4C18-A7AD-800B353EADE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{486D0F2E-F20E-4C18-A7AD-800B353EADE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{486D0F2E-F20E-4C18-A7AD-800B353EADE2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
