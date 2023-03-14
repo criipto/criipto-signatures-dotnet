@@ -27,7 +27,7 @@ public class CreateSignatureOrderTests
     [Fact]
     public async void MutationThrowsValidationError()
     {
-        using (var client = new CriiptoSignaturesClient(Dsl.CLIENT_ID, Dsl.CLIENT_SECRET))
+        using (var client = new CriiptoSignaturesClient(Dsl.CLIENT_ID, Dsl.CLIENT_SECRET, "test"))
         {
             var exn = await Assert.ThrowsAsync<GraphQLException>(() =>
                 client.CreateSignatureOrder(
@@ -55,7 +55,7 @@ public class CreateSignatureOrderTests
     [Fact]
     public async void MutationReturnsSignatureOrder()
     {
-        using (var client = new CriiptoSignaturesClient(Dsl.CLIENT_ID, Dsl.CLIENT_SECRET))
+        using (var client = new CriiptoSignaturesClient(Dsl.CLIENT_ID, Dsl.CLIENT_SECRET, "test"))
         {
             var signatureOrder = await client.CreateSignatureOrder(
                 new Types.CreateSignatureOrderInput()

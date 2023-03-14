@@ -12,12 +12,12 @@ public class CriiptoSignaturesClient : IDisposable
     public CriiptoSignaturesClient(
         string clientId,
         string clientSecret,
-        string endpoint = "https://signatures-api.criipto.com/v1/graphql"
+        string criiptoSdk
     )
     {
         this.graphQLClient =
             new GraphQLHttpClient(
-                endpoint, new NewtonsoftJsonSerializer()
+                "https://signatures-api.criipto.com/v1/graphql", new NewtonsoftJsonSerializer()
             );
 
         this.graphQLClient.HttpClient.DefaultRequestHeaders.Authorization =
@@ -31,9 +31,19 @@ public class CriiptoSignaturesClient : IDisposable
             );
         this.graphQLClient.HttpClient.DefaultRequestHeaders.Add(
             "Criipto-Sdk",
-            "criipto-signatures-dotnet"
+            criiptoSdk
         );
     }
+
+    public CriiptoSignaturesClient(
+        string clientId,
+        string clientSecret
+    ) : this(
+        clientId,
+        clientSecret,
+        "criipto-signatures-dotnet"
+    )
+    { }
 
     public void Dispose()
     {

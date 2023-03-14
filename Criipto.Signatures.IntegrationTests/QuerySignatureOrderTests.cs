@@ -10,7 +10,7 @@ public class QuerySignatureOrderTests
     [Fact]
     public async void QueryReturnsSignatureOrder()
     {
-        using (var client = new CriiptoSignaturesClient(Dsl.CLIENT_ID, Dsl.CLIENT_SECRET))
+        using (var client = new CriiptoSignaturesClient(Dsl.CLIENT_ID, Dsl.CLIENT_SECRET, "test"))
         {
             // Arrange
             var signatureOrder = await client.CreateSignatureOrder(
@@ -45,7 +45,7 @@ public class QuerySignatureOrderTests
     [Fact]
     public async void QueryReturnsNullForUnknownSignatureOrder()
     {
-        using (var client = new CriiptoSignaturesClient(Dsl.CLIENT_ID, Dsl.CLIENT_SECRET))
+        using (var client = new CriiptoSignaturesClient(Dsl.CLIENT_ID, Dsl.CLIENT_SECRET, "test"))
         {
             var actual = await client.QuerySignatureOrder(
                 "asd"

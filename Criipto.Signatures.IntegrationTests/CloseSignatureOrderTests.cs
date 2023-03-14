@@ -9,7 +9,7 @@ public class CloseSignatureOrderTests
     [Fact]
     public async void MutationReturnsSignatureOrder()
     {
-        using (var client = new CriiptoSignaturesClient(Dsl.CLIENT_ID, Dsl.CLIENT_SECRET))
+        using (var client = new CriiptoSignaturesClient(Dsl.CLIENT_ID, Dsl.CLIENT_SECRET, "test"))
         {
             // Arrange
             var signatureOrder = await client.CreateSignatureOrder(

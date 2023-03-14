@@ -10,7 +10,7 @@ public class AddSignatoryTests
     [Fact]
     public async void MutationReturnsSignatory()
     {
-        using (var client = new CriiptoSignaturesClient(Dsl.CLIENT_ID, Dsl.CLIENT_SECRET))
+        using (var client = new CriiptoSignaturesClient(Dsl.CLIENT_ID, Dsl.CLIENT_SECRET, "test"))
         {
             // Arrange
             var signatureOrder = await client.CreateSignatureOrder(
