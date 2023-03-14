@@ -11,7 +11,7 @@ generates:
         Blob: byte[]
         DateTime: string
       mapping:
-        SignatureEvidenceProvider: object
+        SignatureEvidenceProvider: SignatureEvidenceProvider
   Criipto.Signatures/Operations.cs:
     documents: './Criipto.Signatures/*.graphql'
     plugins:

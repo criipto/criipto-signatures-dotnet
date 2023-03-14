@@ -46,8 +46,6 @@ for (const compositionType of compositionTypes) {
     return (indent ? indent[0] : '') + '[JsonConverter(typeof(CompositionTypeConverter))]\n' + match;
   });
 }
-types = types.replace(/List\<SignatureEvidenceProvider\>/g, 'List<object>');
-types = types.replace(/public SignatureEvidenceProvider/g, 'public object');
 
 types = typesSupressions.map(s => `#pragma warning disable ${s}`).join('\n') + '\n' + types;
 fs.writeFileSync(__dirname + '/Criipto.Signatures/Types.cs', types);
