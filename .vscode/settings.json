@@ -2,5 +2,9 @@
     "editor.formatOnSave": true,
     "editor.rulers": [
         80
-    ]
+    ],
+    "editor.tabSize": 4,
+    "editor.detectIndentation": false,
+    "editor.defaultFormatter": "ms-dotnettools.csharp",
+    "csharp.format.enable": true
 }

@@ -156,6 +156,7 @@ namespace Criipto.Signatures {
       public static string SignatureOrderDocument = @"
         query signatureOrder($id: ID!) {
           signatureOrder(id: $id) {
+            id
             status
             signatories {
               id
@@ -192,6 +193,7 @@ namespace Criipto.Signatures {
       public static string SignatureOrderWithDocumentsDocument = @"
         query signatureOrderWithDocuments($id: ID!) {
           signatureOrder(id: $id) {
+            id
             status
             signatories {
               id
