@@ -29,6 +29,10 @@ public class CriiptoSignaturesClient : IDisposable
                     )
                 )
             );
+        this.graphQLClient.HttpClient.DefaultRequestHeaders.Add(
+            "Criipto-Sdk",
+            "criipto-signatures-dotnet"
+        );
     }
 
     public void Dispose()
