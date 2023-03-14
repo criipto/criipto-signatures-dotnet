@@ -14,7 +14,7 @@ jobs:
           dotnet-version: '7.0.201'
       - name: dummy appsettings.test.json
         shell: bash
-        run: touch appsettings.test.json
+        run: echo '{}' > appsettings.test.json
         working-directory: Criipto.Signatures.IntegrationTests
       - run: dotnet test
         working-directory: Criipto.Signatures.IntegrationTests
