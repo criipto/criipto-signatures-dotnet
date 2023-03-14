@@ -58,6 +58,7 @@ mutation closeSignatureOrder($input: CloseSignatureOrderInput!) {
 
 query signatureOrder($id: ID!) {
   signatureOrder(id: $id) {
+    id
     status
 
     signatories {
@@ -71,6 +72,7 @@ query signatureOrder($id: ID!) {
 
 query signatureOrderWithDocuments($id: ID!) {
   signatureOrder(id: $id) {
+    id
     status
 
     signatories {

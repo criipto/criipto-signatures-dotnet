@@ -167,4 +167,25 @@ public class CriiptoSignaturesClient : IDisposable
         input.signatureOrderId = signatureOrderId;
         return await CloseSignatureOrder(input).ConfigureAwait(false);
     }
+
+    public async Task<Types.SignatureOrder?> QuerySignatureOrder(string signatureOrderId, bool includeDocuments = false)
+    {
+        if (signatureOrderId == null) throw new ArgumentNullException(nameof(signatureOrderId));
+
+        var request =
+            includeDocuments == true ?
+                SignatureOrderWithDocumentsQuery.Request(new { id = signatureOrderId }) :
+                SignatureOrderQuery.Request(new { id = signatureOrderId });
+
+        var response = await graphQLClient.SendQueryAsync<Types.Query>(
+            request
+        ).ConfigureAwait(false);
+
+        if (response.Errors?.Length > 0)
+        {
+            throw new GraphQLException(response.Errors[0].Message);
+        }
+
+        return response.Data.signatureOrder;
+    }
 }
