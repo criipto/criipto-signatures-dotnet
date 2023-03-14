@@ -101,3 +101,23 @@ query signatureOrderWithDocuments($id: ID!) {
     }
   }
 }
+
+query signatory($id: ID!) {
+  signatory(id: $id) {
+    id
+    status
+    href
+    downloadHref
+    signatureOrder {
+      id
+      status
+
+      signatories {
+        id
+        status
+        href
+        downloadHref
+      }
+    }
+  }
+}

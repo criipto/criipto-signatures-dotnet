@@ -202,4 +202,22 @@ public class CriiptoSignaturesClient : IDisposable
 
         return response.Data.signatureOrder;
     }
+
+    public async Task<Types.Signatory?> QuerySignatory(string signatoryId)
+    {
+        if (signatoryId == null) throw new ArgumentNullException(nameof(signatoryId));
+
+        var request = SignatoryQuery.Request(new { id = signatoryId });
+
+        var response = await graphQLClient.SendQueryAsync<Types.Query>(
+            request
+        ).ConfigureAwait(false);
+
+        if (response.Errors?.Length > 0)
+        {
+            throw new GraphQLException(response.Errors[0].Message);
+        }
+
+        return response.Data.signatory;
+    }
 }

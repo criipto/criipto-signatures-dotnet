@@ -222,4 +222,47 @@ namespace Criipto.Signatures {
       
     }
     
+
+    public class SignatoryQuery {
+      /// <summary>
+      /// SignatoryQuery.Request 
+      /// <para>Required variables:<br/> { id=(string) }</para>
+      /// <para>Optional variables:<br/> {  }</para>
+      /// </summary>
+      public static GraphQLRequest Request(object variables = null) {
+        return new GraphQLRequest {
+          Query = SignatoryDocument,
+          OperationName = "signatory",
+          Variables = variables
+        };
+      }
+
+      /// <remarks>This method is obsolete. Use Request instead.</remarks>
+      public static GraphQLRequest getSignatoryQuery() {
+        return Request();
+      }
+      
+      public static string SignatoryDocument = @"
+        query signatory($id: ID!) {
+          signatory(id: $id) {
+            id
+            status
+            href
+            downloadHref
+            signatureOrder {
+              id
+              status
+              signatories {
+                id
+                status
+                href
+                downloadHref
+              }
+            }
+          }
+        }
+        ";
+      
+    }
+    
 }
