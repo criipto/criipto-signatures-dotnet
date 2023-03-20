@@ -6,17 +6,20 @@ using System.Linq.Expressions;
 using System.Collections.Concurrent;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Reflection;
 
-namespace Criipto.Signatures {
-    public static class Utils {
-        private static readonly ConcurrentDictionary<string, Func<JToken, object>> ToObjectForTypenameCache = new ();
+namespace Criipto.Signatures
+{
+    public static class Utils
+    {
+        private static readonly ConcurrentDictionary<string, Func<JToken, object>> ToObjectForTypenameCache = new();
 
         public static Func<JToken?, object>? GetToObjectMethodForTargetType(string typeName)
         {
             if (!ToObjectForTypenameCache.ContainsKey(typeName))
             {
                 // Get the type corresponding to the typename
-                Type? targetType = typeof(Types).Assembly
+                Type? targetType = Assembly.GetExecutingAssembly()
                     .GetTypes()
                     .ToList()
                     .Where(t => t.Name == typeName)

@@ -1,5 +1,6 @@
 using Xunit;
 using Criipto.Signatures;
+using Criipto.Signatures.Models;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,10 +8,10 @@ namespace Criipto.Signatures.IntegrationTests;
 
 public class CreateSignatureOrderTests
 {
-    private static List<Types.DocumentInput> DefaultDocuments = new List<Types.DocumentInput>(){
-        new Types.DocumentInput {
+    private static List<DocumentInput> DefaultDocuments = new List<DocumentInput>(){
+        new DocumentInput {
             pdf =
-                new Types.PadesDocumentInput
+                new PadesDocumentInput
                 {
                     title = "TEST",
                     blob = Dsl.Sample
@@ -25,10 +26,10 @@ public class CreateSignatureOrderTests
         {
             var exn = await Assert.ThrowsAsync<GraphQLException>(() =>
                 client.CreateSignatureOrder(
-                    new Types.CreateSignatureOrderInput()
+                    new CreateSignatureOrderInput()
                     {
                         title = "Title",
-                        documents = new List<Types.DocumentInput>()
+                        documents = new List<DocumentInput>()
                     }
                 )
             );
@@ -43,14 +44,14 @@ public class CreateSignatureOrderTests
         {
             var exn = await Assert.ThrowsAsync<GraphQLException>(() =>
                 client.CreateSignatureOrder(
-                    new Types.CreateSignatureOrderInput()
+                    new CreateSignatureOrderInput()
                     {
                         title = "Title",
-                        documents = new List<Types.DocumentInput>()
+                        documents = new List<DocumentInput>()
                         {
-                            new Types.DocumentInput {
+                            new DocumentInput {
                                 pdf =
-                                    new Types.PadesDocumentInput
+                                    new PadesDocumentInput
                                     {
                                         title = "TEST",
                                         blob = new byte[0]
@@ -70,7 +71,7 @@ public class CreateSignatureOrderTests
         using (var client = new CriiptoSignaturesClient(Dsl.CLIENT_ID, Dsl.CLIENT_SECRET, "test"))
         {
             var signatureOrder = await client.CreateSignatureOrder(
-                new Types.CreateSignatureOrderInput()
+                new CreateSignatureOrderInput()
                 {
                     title = "Title",
                     expiresInDays = 1,
@@ -88,16 +89,16 @@ public class CreateSignatureOrderTests
         using (var client = new CriiptoSignaturesClient(Dsl.CLIENT_ID, Dsl.CLIENT_SECRET, "test"))
         {
             var signatureOrder = await client.CreateSignatureOrder(
-                new Types.CreateSignatureOrderInput()
+                new CreateSignatureOrderInput()
                 {
                     title = "Title",
                     expiresInDays = 1,
                     documents = DefaultDocuments,
                     disableVerifyEvidenceProvider = true,
-                    evidenceProviders = new List<Types.EvidenceProviderInput>() {
-                        new Types.EvidenceProviderInput() {
+                    evidenceProviders = new List<EvidenceProviderInput>() {
+                        new EvidenceProviderInput() {
                             enabledByDefault = true,
-                            drawable = new Types.DrawableEvidenceProviderInput() {
+                            drawable = new DrawableEvidenceProviderInput() {
                                 requireName = true
                             }
                         }
@@ -109,7 +110,7 @@ public class CreateSignatureOrderTests
 
             var drawable =
                 signatureOrder!.evidenceProviders
-                    .Where(e => e is Types.DrawableSignatureEvidenceProvider)
+                    .Where(e => e is DrawableSignatureEvidenceProvider)
                     .First();
             Assert.NotNull(signatureOrder?.id);
         }

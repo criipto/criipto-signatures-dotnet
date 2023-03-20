@@ -28,7 +28,7 @@ const operationsSupressions = [
 ];
 
 
-let types = fs.readFileSync(__dirname + '/Criipto.Signatures/Types.cs').toString();
+let types = fs.readFileSync(__dirname + '/Criipto.Signatures/Models.cs').toString();
 
 let compositionTypes = [...types.matchAll(/public interface (.+) \{/g)].map(result => result[1]);
 
@@ -47,8 +47,12 @@ for (const compositionType of compositionTypes) {
   });
 }
 
+types = types.replace('namespace Criipto.Signatures {', 'namespace Criipto.Signatures.Models {');
+types = types.replace('public class Types {', '');
+types = types.replace(/}(?:\s+)}(?:\s+)$/, '}');
+
 types = typesSupressions.map(s => `#pragma warning disable ${s}`).join('\n') + '\n' + types;
-fs.writeFileSync(__dirname + '/Criipto.Signatures/Types.cs', types);
+fs.writeFileSync(__dirname + '/Criipto.Signatures/Models.cs', types);
 
 let operations = fs.readFileSync(__dirname + '/Criipto.Signatures/Operations.cs').toString();
 operations = operationsSupressions.map(s => `#pragma warning disable ${s}`).join('\n') + '\n' + operations;
