@@ -59,6 +59,8 @@ using (var client = new CriiptoSignaturesClient("{YOUR_CRIIPTO_CLIENT_ID}", "{YO
 }
 ```
 
+More examples can be found in the [test suite](https://github.com/criipto/criipto-signatures-dotnet/tree/master/Criipto.Signatures.IntegrationTests).
+
 ## Methods
 
 ### QuerySignatureOrder

@@ -716,6 +716,11 @@ namespace Criipto.Signatures {
       [Required]
       [JsonRequired]
       public string url { get; set; }
+    
+      /// <summary>
+      /// Validates webhook connectivity by triggering a WEBHOOK_VALIDATION event, your webhook must respond within 5 seconds with 200/OK or the signature order creation will fail.
+      /// </summary>
+      public bool? validateConnectivity { get; set; }
       #endregion
     
       #region methods
@@ -793,7 +798,7 @@ namespace Criipto.Signatures {
     #endregion
     
     #region CriiptoVerifySignatureEvidenceProvider
-    public class CriiptoVerifySignatureEvidenceProvider {
+    public class CriiptoVerifySignatureEvidenceProvider : SignatureEvidenceProvider {
       #region members
       [JsonProperty("acrValues")]
       public List<string> acrValues { get; set; }
@@ -1125,7 +1130,7 @@ namespace Criipto.Signatures {
     #endregion
     
     #region DrawableSignatureEvidenceProvider
-    public class DrawableSignatureEvidenceProvider {
+    public class DrawableSignatureEvidenceProvider : SignatureEvidenceProvider {
       #region members
       [JsonProperty("id")]
       public string id { get; set; }
@@ -1435,7 +1440,7 @@ namespace Criipto.Signatures {
     #endregion
     
     #region NoopSignatureEvidenceProvider
-    public class NoopSignatureEvidenceProvider {
+    public class NoopSignatureEvidenceProvider : SignatureEvidenceProvider {
       #region members
       [JsonProperty("id")]
       public string id { get; set; }
@@ -1503,7 +1508,7 @@ namespace Criipto.Signatures {
     #endregion
     
     #region OidcJWTSignatureEvidenceProvider
-    public class OidcJWTSignatureEvidenceProvider {
+    public class OidcJWTSignatureEvidenceProvider : SignatureEvidenceProvider {
       #region members
       [JsonProperty("acrValues")]
       public List<string> acrValues { get; set; }
@@ -2008,6 +2013,7 @@ namespace Criipto.Signatures {
       public string downloadHref { get; set; }
     
       [JsonProperty("evidenceProviders")]
+      [JsonConverter(typeof(CompositionTypeListConverter))]
       public List<SignatureEvidenceProvider> evidenceProviders { get; set; }
     
       /// <summary>
@@ -2256,6 +2262,7 @@ namespace Criipto.Signatures {
       public SignatoryViewerDownload download { get; set; }
     
       [JsonProperty("evidenceProviders")]
+      [JsonConverter(typeof(CompositionTypeListConverter))]
       public List<SignatureEvidenceProvider> evidenceProviders { get; set; }
     
       [JsonProperty("id")]
@@ -2289,6 +2296,7 @@ namespace Criipto.Signatures {
       public bool expired { get; set; }
     
       [JsonProperty("verificationEvidenceProvider")]
+      [JsonConverter(typeof(CompositionTypeConverter))]
       public SignatureEvidenceProvider verificationEvidenceProvider { get; set; }
     
       [JsonProperty("verificationRequired")]
@@ -2412,6 +2420,11 @@ namespace Criipto.Signatures {
     }
     #endregion
     
+    public interface SignatureEvidenceProvider {
+      [JsonProperty("id")]
+      string id { get; set; }
+    }
+    
     #region SignatureOrder
     public class SignatureOrder {
       #region members
@@ -2429,6 +2442,7 @@ namespace Criipto.Signatures {
       public List<Document> documents { get; set; }
     
       [JsonProperty("evidenceProviders")]
+      [JsonConverter(typeof(CompositionTypeListConverter))]
       public List<SignatureEvidenceProvider> evidenceProviders { get; set; }
     
       [JsonProperty("expiresAt")]
@@ -2656,6 +2670,7 @@ namespace Criipto.Signatures {
       public SignatoryViewerDownload download { get; set; }
     
       [JsonProperty("evidenceProviders")]
+      [JsonConverter(typeof(CompositionTypeListConverter))]
       public List<SignatureEvidenceProvider> evidenceProviders { get; set; }
     
       [JsonProperty("id")]

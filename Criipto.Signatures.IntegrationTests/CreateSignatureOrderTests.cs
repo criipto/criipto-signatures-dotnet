@@ -109,7 +109,7 @@ public class CreateSignatureOrderTests
 
             var drawable =
                 signatureOrder!.evidenceProviders
-                    .Where(e => e.__typename == "DrawableSignatureEvidenceProvider")
+                    .Where(e => e is Types.DrawableSignatureEvidenceProvider)
                     .First();
             Assert.NotNull(signatureOrder?.id);
         }
