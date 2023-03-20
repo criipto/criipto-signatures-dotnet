@@ -1,6 +1,6 @@
 schema: https://signatures-api.criipto.com/v1/graphql
 generates:
-  Criipto.Signatures/Types.cs:
+  Criipto.Signatures/Models.cs:
     documents: './Criipto.Signatures/*.graphql'
     plugins:
       - c-sharp

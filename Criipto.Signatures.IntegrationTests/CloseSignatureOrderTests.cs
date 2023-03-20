@@ -1,5 +1,6 @@
 using Xunit;
 using Criipto.Signatures;
+using Criipto.Signatures.Models;
 using System.Collections.Generic;
 using System.IO;
 namespace Criipto.Signatures.IntegrationTests;
@@ -13,14 +14,14 @@ public class CloseSignatureOrderTests
         {
             // Arrange
             var signatureOrder = await client.CreateSignatureOrder(
-                new Types.CreateSignatureOrderInput()
+                new CreateSignatureOrderInput()
                 {
                     title = "Title",
                     expiresInDays = 1,
-                    documents = new List<Types.DocumentInput>(){
-                        new Types.DocumentInput {
+                    documents = new List<DocumentInput>(){
+                        new DocumentInput {
                             pdf =
-                                new Types.PadesDocumentInput
+                                new PadesDocumentInput
                                 {
                                     title = "TEST",
                                     blob = Dsl.Sample

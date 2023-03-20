@@ -22,8 +22,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
-namespace Criipto.Signatures {
-  public class Types {
+namespace Criipto.Signatures.Models {
+  
     
     #region AddSignatoriesInput
     public class AddSignatoriesInput {
@@ -2774,5 +2774,3 @@ namespace Criipto.Signatures {
       string id { get; set; }
     }
   }
-  
-}

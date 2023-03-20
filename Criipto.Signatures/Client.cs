@@ -2,6 +2,7 @@ using GraphQL.Client.Abstractions;
 using GraphQL.Client.Http;
 using GraphQL.Client.Serializer.Newtonsoft;
 using System.Net.Http.Headers;
+using Criipto.Signatures.Models;
 
 namespace Criipto.Signatures;
 public class CriiptoSignaturesClient : IDisposable
@@ -63,13 +64,13 @@ public class CriiptoSignaturesClient : IDisposable
         this.isDisposed = true;
     }
 
-    public async Task<Types.SignatureOrder> CreateSignatureOrder(Types.CreateSignatureOrderInput input)
+    public async Task<SignatureOrder> CreateSignatureOrder(CreateSignatureOrderInput input)
     {
         if (input == null) throw new ArgumentNullException(nameof(input));
 
         var response = await graphQLClient.SendMutationAsync(
             CreateSignatureOrderMutation.Request(new { input = input }),
-            () => new { createSignatureOrder = new Types.CreateSignatureOrderOutput() }
+            () => new { createSignatureOrder = new CreateSignatureOrderOutput() }
         ).ConfigureAwait(false);
 
         if (response.Errors?.Length > 0)
@@ -80,11 +81,11 @@ public class CriiptoSignaturesClient : IDisposable
         return response.Data.createSignatureOrder.signatureOrder;
     }
 
-    public async Task<Types.Signatory> AddSignatory(Types.AddSignatoryInput input)
+    public async Task<Signatory> AddSignatory(AddSignatoryInput input)
     {
         var response = await graphQLClient.SendMutationAsync(
             AddSignatoryMutation.Request(new { input = input }),
-            () => new { addSignatory = new Types.AddSignatoryOutput() }
+            () => new { addSignatory = new AddSignatoryOutput() }
         ).ConfigureAwait(false);
 
         if (response.Errors?.Length > 0)
@@ -95,16 +96,16 @@ public class CriiptoSignaturesClient : IDisposable
         return response.Data.addSignatory.signatory;
     }
 
-    public async Task<Types.Signatory> AddSignatory(Types.SignatureOrder signatureOrder)
+    public async Task<Signatory> AddSignatory(SignatureOrder signatureOrder)
     {
         if (signatureOrder == null) throw new ArgumentNullException(nameof(signatureOrder));
 
-        var input = new Types.AddSignatoryInput();
+        var input = new AddSignatoryInput();
         input.signatureOrderId = signatureOrder.id;
         return await AddSignatory(input).ConfigureAwait(false);
     }
 
-    public async Task<Types.Signatory> AddSignatory(Types.SignatureOrder signatureOrder, Types.AddSignatoryInput input)
+    public async Task<Signatory> AddSignatory(SignatureOrder signatureOrder, AddSignatoryInput input)
     {
         if (signatureOrder == null) throw new ArgumentNullException(nameof(signatureOrder));
         if (input == null) throw new ArgumentNullException(nameof(input));
@@ -113,16 +114,16 @@ public class CriiptoSignaturesClient : IDisposable
         return await AddSignatory(input).ConfigureAwait(false);
     }
 
-    public async Task<Types.Signatory> AddSignatory(string signatureOrderId)
+    public async Task<Signatory> AddSignatory(string signatureOrderId)
     {
         if (signatureOrderId == null) throw new ArgumentNullException(nameof(signatureOrderId));
 
-        var input = new Types.AddSignatoryInput();
+        var input = new AddSignatoryInput();
         input.signatureOrderId = signatureOrderId;
         return await AddSignatory(input).ConfigureAwait(false);
     }
 
-    public async Task<Types.Signatory> AddSignatory(string signatureOrderId, Types.AddSignatoryInput input)
+    public async Task<Signatory> AddSignatory(string signatureOrderId, AddSignatoryInput input)
     {
         if (signatureOrderId == null) throw new ArgumentNullException(nameof(signatureOrderId));
         if (input == null) throw new ArgumentNullException(nameof(input));
@@ -131,11 +132,11 @@ public class CriiptoSignaturesClient : IDisposable
         return await AddSignatory(input).ConfigureAwait(false);
     }
 
-    public async Task<Types.SignatureOrder> CloseSignatureOrder(Types.CloseSignatureOrderInput input)
+    public async Task<SignatureOrder> CloseSignatureOrder(CloseSignatureOrderInput input)
     {
         var response = await graphQLClient.SendMutationAsync(
             CloseSignatureOrderMutation.Request(new { input = input }),
-            () => new { closeSignatureOrder = new Types.CloseSignatureOrderOutput() }
+            () => new { closeSignatureOrder = new CloseSignatureOrderOutput() }
         ).ConfigureAwait(false);
 
         if (response.Errors?.Length > 0)
@@ -146,16 +147,16 @@ public class CriiptoSignaturesClient : IDisposable
         return response.Data.closeSignatureOrder.signatureOrder;
     }
 
-    public async Task<Types.SignatureOrder> CloseSignatureOrder(Types.SignatureOrder signatureOrder)
+    public async Task<SignatureOrder> CloseSignatureOrder(SignatureOrder signatureOrder)
     {
         if (signatureOrder == null) throw new ArgumentNullException(nameof(signatureOrder));
 
-        var input = new Types.CloseSignatureOrderInput();
+        var input = new CloseSignatureOrderInput();
         input.signatureOrderId = signatureOrder.id;
         return await CloseSignatureOrder(input).ConfigureAwait(false);
     }
 
-    public async Task<Types.SignatureOrder> CloseSignatureOrder(Types.SignatureOrder signatureOrder, Types.CloseSignatureOrderInput input)
+    public async Task<SignatureOrder> CloseSignatureOrder(SignatureOrder signatureOrder, CloseSignatureOrderInput input)
     {
         if (signatureOrder == null) throw new ArgumentNullException(nameof(signatureOrder));
         if (input == null) throw new ArgumentNullException(nameof(input));
@@ -164,16 +165,16 @@ public class CriiptoSignaturesClient : IDisposable
         return await CloseSignatureOrder(input).ConfigureAwait(false);
     }
 
-    public async Task<Types.SignatureOrder> CloseSignatureOrder(string signatureOrderId)
+    public async Task<SignatureOrder> CloseSignatureOrder(string signatureOrderId)
     {
         if (signatureOrderId == null) throw new ArgumentNullException(nameof(signatureOrderId));
 
-        var input = new Types.CloseSignatureOrderInput();
+        var input = new CloseSignatureOrderInput();
         input.signatureOrderId = signatureOrderId;
         return await CloseSignatureOrder(input).ConfigureAwait(false);
     }
 
-    public async Task<Types.SignatureOrder> CloseSignatureOrder(string signatureOrderId, Types.CloseSignatureOrderInput input)
+    public async Task<SignatureOrder> CloseSignatureOrder(string signatureOrderId, CloseSignatureOrderInput input)
     {
         if (signatureOrderId == null) throw new ArgumentNullException(nameof(signatureOrderId));
         if (input == null) throw new ArgumentNullException(nameof(input));
@@ -182,7 +183,7 @@ public class CriiptoSignaturesClient : IDisposable
         return await CloseSignatureOrder(input).ConfigureAwait(false);
     }
 
-    public async Task<Types.SignatureOrder?> QuerySignatureOrder(string signatureOrderId, bool includeDocuments = false)
+    public async Task<SignatureOrder?> QuerySignatureOrder(string signatureOrderId, bool includeDocuments = false)
     {
         if (signatureOrderId == null) throw new ArgumentNullException(nameof(signatureOrderId));
 
@@ -191,7 +192,7 @@ public class CriiptoSignaturesClient : IDisposable
                 SignatureOrderWithDocumentsQuery.Request(new { id = signatureOrderId }) :
                 SignatureOrderQuery.Request(new { id = signatureOrderId });
 
-        var response = await graphQLClient.SendQueryAsync<Types.Query>(
+        var response = await graphQLClient.SendQueryAsync<Query>(
             request
         ).ConfigureAwait(false);
 
@@ -203,13 +204,13 @@ public class CriiptoSignaturesClient : IDisposable
         return response.Data.signatureOrder;
     }
 
-    public async Task<Types.Signatory?> QuerySignatory(string signatoryId)
+    public async Task<Signatory?> QuerySignatory(string signatoryId)
     {
         if (signatoryId == null) throw new ArgumentNullException(nameof(signatoryId));
 
         var request = SignatoryQuery.Request(new { id = signatoryId });
 
-        var response = await graphQLClient.SendQueryAsync<Types.Query>(
+        var response = await graphQLClient.SendQueryAsync<Query>(
             request
         ).ConfigureAwait(false);
 

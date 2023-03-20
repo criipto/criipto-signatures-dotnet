@@ -25,21 +25,22 @@ var client = new CriiptoSignaturesClient("{YOUR_CRIIPTO_CLIENT_ID}", "{YOUR_CRII
 
 ```csharp
 using Criipto.Signatures;
+using Criipto.Signatures.Models;
 
 using (var client = new CriiptoSignaturesClient("{YOUR_CRIIPTO_CLIENT_ID}", "{YOUR_CRIIPTO_CLIENT_SECRET}")) {
     // Setup document input
-    var documents = new List<Types.DocumentInput>{
-        new Types.DocumentInput {
-            pdf = new Types.PadesDocumentInput {
+    var documents = new List<DocumentInput>{
+        new DocumentInput {
+            pdf = new PadesDocumentInput {
                 title = "Dotnet Sample",
                 blob = pdf,
-                storageMode = Types.DocumentStorageMode.Temporary
+                storageMode = DocumentStorageMode.Temporary
             }
         }
     };
 
     // Setup signature order input
-    var createSignatureOrderInput = new Types.CreateSignatureOrderInput
+    var createSignatureOrderInput = new CreateSignatureOrderInput
     {
         title = "Dotnet Sample",
         documents = documents
@@ -65,7 +66,7 @@ More examples can be found in the [test suite](https://github.com/criipto/criipt
 
 ### QuerySignatureOrder
 
-Will return a `Types.SignatureOrder` or null if signature order does not exist.
+Will return a `Models.SignatureOrder` or null if signature order does not exist.
 
 ```csharp
 using Criipto.Signatures;
@@ -77,7 +78,7 @@ using (var client = new CriiptoSignaturesClient("{YOUR_CRIIPTO_CLIENT_ID}", "{YO
 
 ### QuerySignatory
 
-Will return a `Types.Signatory` or null if signatory does not exist.
+Will return a `Models.Signatory` or null if signatory does not exist.
 
 ```csharp
 using Criipto.Signatures;
