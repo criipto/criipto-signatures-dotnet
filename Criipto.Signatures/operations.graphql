@@ -1,32 +1,75 @@
+fragment BasicDocument on Document {
+  __typename
+  id   
+}
+fragment SignedDocument on Document {
+  blob
+  signatures {
+    __typename
+    signatory {
+      id
+    }
+
+    ... on JWTSignature {
+      jwt
+      jwks
+    }
+  }
+}
+fragment BasicSignatory on Signatory {
+  id
+  status
+  href
+  downloadHref
+  reference
+  role
+
+  evidenceProviders {
+    __typename
+    id
+  }
+
+  documents {
+    edges {
+      status
+      node {
+        __typename
+        id
+      }
+    }
+  }
+}
+fragment BasicSignatureOrder on SignatureOrder {
+  id
+  status
+
+  signatories {
+    ...BasicSignatory
+  }
+
+  evidenceProviders {
+    __typename
+    id
+  }
+}
+
 mutation createSignatureOrder($input: CreateSignatureOrderInput!) {
   createSignatureOrder(input: $input) {
     signatureOrder {
-      id
-
+      ... BasicSignatureOrder
       documents {
-        __typename
-        id
+        ...BasicDocument
       }
+    }
+  }
+}
 
-      signatories {
-        id
-        status
-      }
-
-      evidenceProviders {
-        __typename
-        ... on NoopSignatureEvidenceProvider {
-          id
-        }
-        ... on OidcJWTSignatureEvidenceProvider {
-          id
-        }
-        ... on CriiptoVerifySignatureEvidenceProvider {
-          id
-        }
-        ... on DrawableSignatureEvidenceProvider {
-          id
-        }
+mutation cleanupSignatureOrder($input: CleanupSignatureOrderInput!) {
+  cleanupSignatureOrder(input: $input) {
+    signatureOrder {
+      ... BasicSignatureOrder
+      documents {
+        ...BasicDocument
       }
     }
   }
@@ -35,9 +78,7 @@ mutation createSignatureOrder($input: CreateSignatureOrderInput!) {
 mutation addSignatory($input: AddSignatoryInput!) {
   addSignatory(input: $input) {
     signatory {
-      id
-      status
-      href
+      ...BasicSignatory
     }
   }
 }
@@ -45,28 +86,21 @@ mutation addSignatory($input: AddSignatoryInput!) {
 mutation closeSignatureOrder($input: CloseSignatureOrderInput!) {
   closeSignatureOrder(input: $input) {
     signatureOrder {
-      id
-      signatories {
-        id
-        status
-        downloadHref
-      }
+      ... BasicSignatureOrder
       documents {
-        __typename
-        id
-        blob
+        ...BasicDocument
+        ...SignedDocument
+      }
+    }
+  }
+}
 
-        signatures {
-          __typename
-          signatory {
-            id
-          }
-
-          ... on JWTSignature {
-            jwt
-            jwks
-          }
-        }
+mutation cancelSignatureOrder($input: CancelSignatureOrderInput!) {
+  cancelSignatureOrder(input: $input) {
+    signatureOrder {
+      ... BasicSignatureOrder
+      documents {
+        ...BasicDocument
       }
     }
   }
@@ -74,66 +108,26 @@ mutation closeSignatureOrder($input: CloseSignatureOrderInput!) {
 
 query signatureOrder($id: ID!) {
   signatureOrder(id: $id) {
-    id
-    status
-
-    signatories {
-      id
-      status
-      href
-      downloadHref
-    }
+    ... BasicSignatureOrder
   }
 }
 
 query signatureOrderWithDocuments($id: ID!) {
   signatureOrder(id: $id) {
-    id
-    status
-
-    signatories {
-      id
-      status
-      href
-      downloadHref
-    }
+    ... BasicSignatureOrder
 
     documents {
-      __typename
-      id
-      blob
-
-      signatures {
-        __typename
-        signatory {
-          id
-        }
-
-        ... on JWTSignature {
-          jwt
-          jwks
-        }
-      }
+      ...BasicDocument
+      ...SignedDocument
     }
   }
 }
 
 query signatory($id: ID!) {
   signatory(id: $id) {
-    id
-    status
-    href
-    downloadHref
+    ...BasicSignatory
     signatureOrder {
-      id
-      status
-
-      signatories {
-        id
-        status
-        href
-        downloadHref
-      }
+      ...BasicSignatureOrder
     }
   }
 }
