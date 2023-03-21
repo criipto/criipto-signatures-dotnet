@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 namespace Criipto.Signatures.IntegrationTests;
 
-public class CloseSignatureOrderTests
+public class CancelSignatureOrderTests
 {
     [Fact]
     public async void MutationReturnsSignatureOrder()
@@ -32,13 +32,13 @@ public class CloseSignatureOrderTests
             );
 
             // Act
-            var actual = await client.CloseSignatureOrder(
+            var actual = await client.CancelSignatureOrder(
                 signatureOrder
             );
 
             // Assert
             Assert.NotNull(actual?.id);
-            Assert.NotNull(actual?.documents[0].blob);
+            Assert.Equal(SignatureOrderStatus.CANCELLED, actual?.status);
         }
     }
 }

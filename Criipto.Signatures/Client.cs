@@ -183,6 +183,72 @@ public class CriiptoSignaturesClient : IDisposable
         return await CloseSignatureOrder(input).ConfigureAwait(false);
     }
 
+    public async Task<SignatureOrder> CancelSignatureOrder(CancelSignatureOrderInput input)
+    {
+        var response = await graphQLClient.SendMutationAsync(
+            CancelSignatureOrderMutation.Request(new { input = input }),
+            () => new { cancelSignatureOrder = new CancelSignatureOrderOutput() }
+        ).ConfigureAwait(false);
+
+        if (response.Errors?.Length > 0)
+        {
+            throw new GraphQLException(response.Errors[0].Message);
+        }
+
+        return response.Data.cancelSignatureOrder.signatureOrder;
+    }
+
+    public async Task<SignatureOrder> CancelSignatureOrder(SignatureOrder signatureOrder)
+    {
+        if (signatureOrder == null) throw new ArgumentNullException(nameof(signatureOrder));
+
+        var input = new CancelSignatureOrderInput();
+        input.signatureOrderId = signatureOrder.id;
+        return await CancelSignatureOrder(input).ConfigureAwait(false);
+    }
+
+    public async Task<SignatureOrder> CancelSignatureOrder(string signatureOrderId)
+    {
+        if (signatureOrderId == null) throw new ArgumentNullException(nameof(signatureOrderId));
+
+        var input = new CancelSignatureOrderInput();
+        input.signatureOrderId = signatureOrderId;
+        return await CancelSignatureOrder(input).ConfigureAwait(false);
+    }
+
+    public async Task<SignatureOrder> CleanupSignatureOrder(CleanupSignatureOrderInput input)
+    {
+        var response = await graphQLClient.SendMutationAsync(
+            CleanupSignatureOrderMutation.Request(new { input = input }),
+            () => new { cleanupSignatureOrder = new CleanupSignatureOrderOutput() }
+        ).ConfigureAwait(false);
+
+        if (response.Errors?.Length > 0)
+        {
+            throw new GraphQLException(response.Errors[0].Message);
+        }
+
+        return response.Data.cleanupSignatureOrder.signatureOrder;
+    }
+
+    public async Task<SignatureOrder> CleanupSignatureOrder(SignatureOrder signatureOrder)
+    {
+        if (signatureOrder == null) throw new ArgumentNullException(nameof(signatureOrder));
+
+        var input = new CleanupSignatureOrderInput();
+        input.signatureOrderId = signatureOrder.id;
+        return await CleanupSignatureOrder(input).ConfigureAwait(false);
+    }
+
+    public async Task<SignatureOrder> CleanupSignatureOrder(string signatureOrderId)
+    {
+        if (signatureOrderId == null) throw new ArgumentNullException(nameof(signatureOrderId));
+
+        var input = new CleanupSignatureOrderInput();
+        input.signatureOrderId = signatureOrderId;
+        return await CleanupSignatureOrder(input).ConfigureAwait(false);
+    }
+
     public async Task<SignatureOrder?> QuerySignatureOrder(string signatureOrderId, bool includeDocuments = false)
     {
         if (signatureOrderId == null) throw new ArgumentNullException(nameof(signatureOrderId));
