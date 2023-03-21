@@ -93,17 +93,12 @@ public class CriiptoSignaturesClient : IDisposable
 
     public async Task<Signatory> AddSignatory(AddSignatoryInput input)
     {
-        var response = await graphQLClient.SendMutationAsync(
+        var data = await SendMutation(
             AddSignatoryMutation.Request(new { input = input }),
             () => new { addSignatory = new AddSignatoryOutput() }
         ).ConfigureAwait(false);
 
-        if (response.Errors?.Length > 0)
-        {
-            throw new GraphQLException(response.Errors[0].Message);
-        }
-
-        return response.Data.addSignatory.signatory;
+        return data.addSignatory.signatory;
     }
 
     public async Task<Signatory> AddSignatory(SignatureOrder signatureOrder)
@@ -140,6 +135,34 @@ public class CriiptoSignaturesClient : IDisposable
 
         input.signatureOrderId = signatureOrderId;
         return await AddSignatory(input).ConfigureAwait(false);
+    }
+
+    public async Task<Signatory> ChangeSignatory(ChangeSignatoryInput input)
+    {
+        var data = await SendMutation(
+            ChangeSignatoryMutation.Request(new { input = input }),
+            () => new { changeSignatory = new ChangeSignatoryOutput() }
+        ).ConfigureAwait(false);
+
+        return data.changeSignatory.signatory;
+    }
+
+    public async Task<Signatory> ChangeSignatory(Signatory signatory, ChangeSignatoryInput input)
+    {
+        if (signatory == null) throw new ArgumentNullException(nameof(signatory));
+        if (input == null) throw new ArgumentNullException(nameof(input));
+
+        input.signatoryId = signatory.id;
+        return await ChangeSignatory(input).ConfigureAwait(false);
+    }
+
+    public async Task<Signatory> ChangeSignatory(string signatoryId, ChangeSignatoryInput input)
+    {
+        if (signatoryId == null) throw new ArgumentNullException(nameof(signatoryId));
+        if (input == null) throw new ArgumentNullException(nameof(input));
+
+        input.signatoryId = signatoryId;
+        return await ChangeSignatory(input).ConfigureAwait(false);
     }
 
     public async Task<SignatureOrder> CloseSignatureOrder(CloseSignatureOrderInput input)
