@@ -200,6 +200,58 @@ namespace Criipto.Signatures {
     }
     
 
+    public class ChangeSignatoryMutation {
+      /// <summary>
+      /// ChangeSignatoryMutation.Request 
+      /// <para>Required variables:<br/> { input=(ChangeSignatoryInput) }</para>
+      /// <para>Optional variables:<br/> {  }</para>
+      /// </summary>
+      public static GraphQLRequest Request(object variables = null) {
+        return new GraphQLRequest {
+          Query = ChangeSignatoryDocument,
+          OperationName = "changeSignatory",
+          Variables = variables
+        };
+      }
+
+      /// <remarks>This method is obsolete. Use Request instead.</remarks>
+      public static GraphQLRequest getChangeSignatoryMutation() {
+        return Request();
+      }
+      
+      public static string ChangeSignatoryDocument = @"
+        mutation changeSignatory($input: ChangeSignatoryInput!) {
+          changeSignatory(input: $input) {
+            signatory {
+              ...BasicSignatory
+            }
+          }
+        }
+        fragment BasicSignatory on Signatory {
+          id
+          status
+          href
+          downloadHref
+          reference
+          role
+          evidenceProviders {
+            __typename
+            id
+          }
+          documents {
+            edges {
+              status
+              node {
+                __typename
+                id
+              }
+            }
+          }
+        }";
+      
+    }
+    
+
     public class CloseSignatureOrderMutation {
       /// <summary>
       /// CloseSignatureOrderMutation.Request 

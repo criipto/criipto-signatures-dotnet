@@ -83,6 +83,14 @@ mutation addSignatory($input: AddSignatoryInput!) {
   }
 }
 
+mutation changeSignatory($input: ChangeSignatoryInput!) {
+  changeSignatory(input: $input) {
+    signatory {
+      ...BasicSignatory
+    }
+  }
+}
+
 mutation closeSignatureOrder($input: CloseSignatureOrderInput!) {
   closeSignatureOrder(input: $input) {
     signatureOrder {
