@@ -122,6 +122,14 @@ mutation cancelSignatureOrder($input: CancelSignatureOrderInput!) {
   }
 }
 
+mutation signActingAs($input: SignActingAsInput!) {
+  signActingAs(input: $input) {
+    signatory {
+      ...BasicSignatory
+    }
+  }
+}
+
 query signatureOrder($id: ID!) {
   signatureOrder(id: $id) {
     ... BasicSignatureOrder

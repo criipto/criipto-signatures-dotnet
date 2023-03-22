@@ -301,6 +301,34 @@ public class CriiptoSignaturesClient : IDisposable
         return await CleanupSignatureOrder(input).ConfigureAwait(false);
     }
 
+    public async Task<Signatory> SignActingAs(SignActingAsInput input)
+    {
+        var data = await SendMutation(
+            SignActingAsMutation.Request(new { input = input }),
+            () => new { SignActingAs = new SignActingAsOutput() }
+        ).ConfigureAwait(false);
+
+        return data.SignActingAs.signatory;
+    }
+
+    public async Task<Signatory> SignActingAs(Signatory signatory, SignActingAsInput input)
+    {
+        if (signatory == null) throw new ArgumentNullException(nameof(signatory));
+        if (input == null) throw new ArgumentNullException(nameof(input));
+
+        input.signatoryId = signatory.id;
+        return await SignActingAs(input).ConfigureAwait(false);
+    }
+
+    public async Task<Signatory> SignActingAs(string signatoryId, SignActingAsInput input)
+    {
+        if (signatoryId == null) throw new ArgumentNullException(nameof(signatoryId));
+        if (input == null) throw new ArgumentNullException(nameof(input));
+
+        input.signatoryId = signatoryId;
+        return await SignActingAs(input).ConfigureAwait(false);
+    }
+
     public async Task<SignatureOrder?> QuerySignatureOrder(string signatureOrderId, bool includeDocuments = false)
     {
         if (signatureOrderId == null) throw new ArgumentNullException(nameof(signatureOrderId));

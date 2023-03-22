@@ -458,6 +458,58 @@ namespace Criipto.Signatures {
     }
     
 
+    public class SignActingAsMutation {
+      /// <summary>
+      /// SignActingAsMutation.Request 
+      /// <para>Required variables:<br/> { input=(SignActingAsInput) }</para>
+      /// <para>Optional variables:<br/> {  }</para>
+      /// </summary>
+      public static GraphQLRequest Request(object variables = null) {
+        return new GraphQLRequest {
+          Query = SignActingAsDocument,
+          OperationName = "signActingAs",
+          Variables = variables
+        };
+      }
+
+      /// <remarks>This method is obsolete. Use Request instead.</remarks>
+      public static GraphQLRequest getSignActingAsMutation() {
+        return Request();
+      }
+      
+      public static string SignActingAsDocument = @"
+        mutation signActingAs($input: SignActingAsInput!) {
+          signActingAs(input: $input) {
+            signatory {
+              ...BasicSignatory
+            }
+          }
+        }
+        fragment BasicSignatory on Signatory {
+          id
+          status
+          href
+          downloadHref
+          reference
+          role
+          evidenceProviders {
+            __typename
+            id
+          }
+          documents {
+            edges {
+              status
+              node {
+                __typename
+                id
+              }
+            }
+          }
+        }";
+      
+    }
+    
+
     public class SignatureOrderQuery {
       /// <summary>
       /// SignatureOrderQuery.Request 
