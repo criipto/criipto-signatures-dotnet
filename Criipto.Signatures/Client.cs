@@ -1,3 +1,5 @@
+#pragma warning disable CA1002
+
 using GraphQL.Client.Abstractions;
 using GraphQL.Client.Http;
 using GraphQL.Client.Serializer.Newtonsoft;
@@ -135,6 +137,38 @@ public class CriiptoSignaturesClient : IDisposable
 
         input.signatureOrderId = signatureOrderId;
         return await AddSignatory(input).ConfigureAwait(false);
+    }
+
+    public async Task<List<Signatory>> AddSignatories(AddSignatoriesInput input)
+    {
+        var data = await SendMutation(
+            AddSignatoriesMutation.Request(new { input = input }),
+            () => new { addSignatories = new AddSignatoriesOutput() }
+        ).ConfigureAwait(false);
+
+        return data.addSignatories.signatories;
+    }
+
+    public async Task<List<Signatory>> AddSignatories(SignatureOrder signatureOrder, List<CreateSignatureOrderSignatoryInput> signatories)
+    {
+        if (signatureOrder == null) throw new ArgumentNullException(nameof(signatureOrder));
+        if (signatories == null) throw new ArgumentNullException(nameof(signatories));
+
+        var input = new AddSignatoriesInput();
+        input.signatureOrderId = signatureOrder.id;
+        input.signatories = signatories;
+        return await AddSignatories(input).ConfigureAwait(false);
+    }
+
+    public async Task<List<Signatory>> AddSignatories(string signatureOrderId, List<CreateSignatureOrderSignatoryInput> signatories)
+    {
+        if (signatureOrderId == null) throw new ArgumentNullException(nameof(signatureOrderId));
+        if (signatories == null) throw new ArgumentNullException(nameof(signatories));
+
+        var input = new AddSignatoriesInput();
+        input.signatureOrderId = signatureOrderId;
+        input.signatories = signatories;
+        return await AddSignatories(input).ConfigureAwait(false);
     }
 
     public async Task<Signatory> ChangeSignatory(ChangeSignatoryInput input)
