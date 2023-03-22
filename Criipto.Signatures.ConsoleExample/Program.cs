@@ -1,4 +1,5 @@
 ﻿using Criipto.Signatures;
+using Criipto.Signatures.Models;
 
 // Run sample with `CRIIPTO_SIGNATURES_CLIENT_ID=... CRIIPTO_SIGNATURES_CLIENT_SECRET=... dotnet run`
 var clientId = Environment.GetEnvironmentVariable("CRIIPTO_SIGNATURES_CLIENT_ID");
@@ -12,18 +13,18 @@ var pdf = File.ReadAllBytes("./sample.pdf");
 using (var client = new CriiptoSignaturesClient(clientId, clientSecret))
 {
     // Setup document input
-    var documents = new List<Types.DocumentInput>{
-        new Types.DocumentInput {
-            pdf = new Types.PadesDocumentInput {
+    var documents = new List<DocumentInput>{
+        new DocumentInput {
+            pdf = new PadesDocumentInput {
                 title = "Dotnet Sample",
                 blob = pdf,
-                storageMode = Types.DocumentStorageMode.Temporary
+                storageMode = DocumentStorageMode.Temporary
             }
         }
     };
 
     // Setup signature order input
-    var createSignatureOrderInput = new Types.CreateSignatureOrderInput
+    var createSignatureOrderInput = new CreateSignatureOrderInput
     {
         title = "Dotnet Sample",
         documents = documents
@@ -45,7 +46,7 @@ using (var client = new CriiptoSignaturesClient(clientId, clientSecret))
     // Check if all signatories signed without rejecting or errors
     foreach (var signatory in signatureOrder.signatories)
     {
-        if (signatory.status == Types.SignatoryStatus.ERROR || signatory.status == Types.SignatoryStatus.REJECTED)
+        if (signatory.status == SignatoryStatus.ERROR || signatory.status == SignatoryStatus.REJECTED)
             throw new Exception("A signatory failed or declined to sign");
     }
 
@@ -61,7 +62,7 @@ using (var client = new CriiptoSignaturesClient(clientId, clientSecret))
 
         foreach (var signature in document.signatures)
         {
-            if (signature is Types.JWTSignature jwtSignature)
+            if (signature is JWTSignature jwtSignature)
             {
                 Console.WriteLine($"JWT signature: {jwtSignature.jwt}");
             }
@@ -69,13 +70,13 @@ using (var client = new CriiptoSignaturesClient(clientId, clientSecret))
     }
 }
 
-static async Task<Types.SignatureOrder> pollSignatureOrderComplete(CriiptoSignaturesClient client, string id)
+static async Task<SignatureOrder> pollSignatureOrderComplete(CriiptoSignaturesClient client, string id)
 {
     var signatureOrder = await client.QuerySignatureOrder(id);
     if (signatureOrder == null) throw new ArgumentNullException(nameof(signatureOrder));
 
     var allComplete =
-        signatureOrder.signatories.Where(s => s.status != Types.SignatoryStatus.OPEN).Count()
+        signatureOrder.signatories.Where(s => s.status != SignatoryStatus.OPEN).Count()
         == signatureOrder.signatories.Count();
 
     if (allComplete) return signatureOrder;
