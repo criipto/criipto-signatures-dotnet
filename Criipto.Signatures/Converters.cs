@@ -112,4 +112,71 @@ namespace Criipto.Signatures
             throw new NotImplementedException("Tried to write a GQL Composition type list to JSON");
         }
     }
+
+    public class TolerantEnumConverter : JsonConverter
+    {
+        public override bool CanConvert(Type objectType)
+        {
+            if (objectType == null) return false;
+            Type? type = IsNullableType(objectType) ? Nullable.GetUnderlyingType(objectType) : objectType;
+            if (type == null) return false;
+            return type.IsEnum;
+        }
+
+        public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
+        {
+            bool isNullable = IsNullableType(objectType);
+            Type? enumType = isNullable ? Nullable.GetUnderlyingType(objectType) : objectType;
+
+            if (enumType == null) return null;
+
+            string[] names = Enum.GetNames(enumType);
+
+            if (reader.TokenType == JsonToken.String)
+            {
+                string? enumText = reader.Value?.ToString();
+                Console.WriteLine(enumText);
+
+                if (!string.IsNullOrEmpty(enumText))
+                {
+                    string? match = names
+                        .Where(n => string.Equals(n, enumText, StringComparison.OrdinalIgnoreCase))
+                        .FirstOrDefault();
+
+                    if (match != null)
+                    {
+                        return Enum.Parse(enumType, match);
+                    }
+
+                    string? defaultName = names
+                        .Where(n => string.Equals(n, "FUTURE_ADDED_VALUE", StringComparison.OrdinalIgnoreCase))
+                        .FirstOrDefault();
+
+                    if (defaultName == null)
+                    {
+                        defaultName = names.First();
+                    }
+
+                    return Enum.Parse(enumType, defaultName);
+                }
+            }
+
+            return null;
+        }
+
+        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
+        {
+            if (value == null)
+            {
+                writer.WriteValue("null");
+                return;
+            }
+            writer.WriteValue(value.ToString());
+        }
+
+        private static bool IsNullableType(Type t)
+        {
+            return (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>));
+        }
+    }
 }

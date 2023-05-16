@@ -17,6 +17,7 @@
 #pragma warning disable CA1720
 #pragma warning disable CA1052
 #pragma warning disable CA1819
+#pragma warning disable CA1716
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -173,6 +174,10 @@ namespace Criipto.Signatures.Models {
     
       [JsonProperty("verifyApplication")]
       public VerifyApplication verifyApplication { get; set; }
+    
+      [JsonProperty("webhookLogs")]
+      [JsonConverter(typeof(CompositionTypeListConverter))]
+      public List<WebhookInvocation> webhookLogs { get; set; }
       #endregion
     }
     #endregion
@@ -190,6 +195,7 @@ namespace Criipto.Signatures.Models {
       public string id { get; set; }
     
       [JsonProperty("mode")]
+      [JsonConverter(typeof(TolerantEnumConverter))]
       public ApplicationApiKeyMode mode { get; set; }
     
       [JsonProperty("note")]
@@ -199,7 +205,8 @@ namespace Criipto.Signatures.Models {
     #endregion
     public enum ApplicationApiKeyMode {
       READ_ONLY,
-      READ_WRITE
+      READ_WRITE,
+      FUTURE_ADDED_VALUE = 999
     }
     
     
@@ -403,6 +410,7 @@ namespace Criipto.Signatures.Models {
       [JsonRequired]
       public string applicationId { get; set; }
     
+      [JsonConverter(typeof(TolerantEnumConverter))]
       public ApplicationApiKeyMode? mode { get; set; }
     
       public string note { get; set; }
@@ -461,6 +469,7 @@ namespace Criipto.Signatures.Models {
     
       [Required]
       [JsonRequired]
+      [JsonConverter(typeof(TolerantEnumConverter))]
       public VerifyApplicationEnvironment verifyApplicationEnvironment { get; set; }
     
       [Required]
@@ -665,6 +674,7 @@ namespace Criipto.Signatures.Models {
       /// <summary>
       /// The language of texts rendered to the signatory.
       /// </summary>
+      [JsonConverter(typeof(TolerantEnumConverter))]
       public Language? language { get; set; }
     
       /// <summary>
@@ -981,7 +991,8 @@ namespace Criipto.Signatures.Models {
       /// <summary>
       /// Temporary documents will be deleted once completed.
       /// </summary>
-      Temporary
+      Temporary,
+      FUTURE_ADDED_VALUE = 999
     }
     
     
@@ -1210,7 +1221,8 @@ namespace Criipto.Signatures.Models {
       /// <summary>
       /// Require the signatory to be validated before viewing documents
       /// </summary>
-      VIEW
+      VIEW,
+      FUTURE_ADDED_VALUE = 999
     }
     
     
@@ -1280,7 +1292,8 @@ namespace Criipto.Signatures.Models {
       DA_DK,
       EN_US,
       NB_NO,
-      SV_SE
+      SV_SE,
+      FUTURE_ADDED_VALUE = 999
     }
     
     
@@ -1370,6 +1383,9 @@ namespace Criipto.Signatures.Models {
       /// </summary>
       [JsonProperty("rejectSignatureOrder")]
       public RejectSignatureOrderOutput rejectSignatureOrder { get; set; }
+    
+      [JsonProperty("retrySignatureOrderWebhook")]
+      public RetrySignatureOrderWebhookOutput retrySignatureOrderWebhook { get; set; }
     
       /// <summary>
       /// Used by Signatory frontends to sign the documents in a signature order.
@@ -1545,6 +1561,7 @@ namespace Criipto.Signatures.Models {
     
       [Required]
       [JsonRequired]
+      [JsonConverter(typeof(TolerantEnumConverter))]
       public DocumentStorageMode storageMode { get; set; }
     
       [Required]
@@ -1622,6 +1639,7 @@ namespace Criipto.Signatures.Models {
       public string reference { get; set; }
     
       [JsonProperty("signatoryViewerStatus")]
+      [JsonConverter(typeof(TolerantEnumConverter))]
       public SignatoryDocumentStatus? signatoryViewerStatus { get; set; }
     
       [JsonProperty("signatures")]
@@ -1797,6 +1815,52 @@ namespace Criipto.Signatures.Models {
       [JsonProperty("viewer")]
       [JsonConverter(typeof(CompositionTypeConverter))]
       public Viewer viewer { get; set; }
+      #endregion
+    }
+    #endregion
+    
+    #region RetrySignatureOrderWebhookInput
+    public class RetrySignatureOrderWebhookInput {
+      #region members
+      [Required]
+      [JsonRequired]
+      public string retryPayload { get; set; }
+    
+      [Required]
+      [JsonRequired]
+      public string signatureOrderId { get; set; }
+      #endregion
+    
+      #region methods
+      public dynamic GetInputObject()
+      {
+        IDictionary<string, object> d = new System.Dynamic.ExpandoObject();
+    
+        var properties = GetType().GetProperties(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+        foreach (var propertyInfo in properties)
+        {
+          var value = propertyInfo.GetValue(this);
+          var defaultValue = propertyInfo.PropertyType.IsValueType ? Activator.CreateInstance(propertyInfo.PropertyType) : null;
+    
+          var requiredProp = propertyInfo.GetCustomAttributes(typeof(JsonRequiredAttribute), false).Length > 0;
+    
+          if (requiredProp || value != defaultValue)
+          {
+            d[propertyInfo.Name] = value;
+          }
+        }
+        return d;
+      }
+      #endregion
+    }
+    #endregion
+    
+    #region RetrySignatureOrderWebhookOutput
+    public class RetrySignatureOrderWebhookOutput {
+      #region members
+      [JsonProperty("invocation")]
+      [JsonConverter(typeof(CompositionTypeConverter))]
+      public WebhookInvocation invocation { get; set; }
       #endregion
     }
     #endregion
@@ -2041,6 +2105,7 @@ namespace Criipto.Signatures.Models {
       /// The current status of the signatory.
       /// </summary>
       [JsonProperty("status")]
+      [JsonConverter(typeof(TolerantEnumConverter))]
       public SignatoryStatus status { get; set; }
     
       /// <summary>
@@ -2117,6 +2182,7 @@ namespace Criipto.Signatures.Models {
       public Document node { get; set; }
     
       [JsonProperty("status")]
+      [JsonConverter(typeof(TolerantEnumConverter))]
       public SignatoryDocumentStatus? status { get; set; }
       #endregion
     }
@@ -2164,7 +2230,9 @@ namespace Criipto.Signatures.Models {
       APPROVED,
       OPENED,
       PREAPPROVED,
-      REJECTED
+      REJECTED,
+      SIGNED,
+      FUTURE_ADDED_VALUE = 999
     }
     
     
@@ -2237,7 +2305,8 @@ namespace Criipto.Signatures.Models {
     #endregion
     public enum SignatoryFrontendEvent {
       DOWNLOAD_LINK_OPENED,
-      SIGN_LINK_OPENED
+      SIGN_LINK_OPENED,
+      FUTURE_ADDED_VALUE = 999
     }
     
     public enum SignatoryStatus {
@@ -2245,7 +2314,8 @@ namespace Criipto.Signatures.Models {
       ERROR,
       OPEN,
       REJECTED,
-      SIGNED
+      SIGNED,
+      FUTURE_ADDED_VALUE = 999
     }
     
     
@@ -2272,12 +2342,14 @@ namespace Criipto.Signatures.Models {
       public string signatoryId { get; set; }
     
       [JsonProperty("signatureOrderStatus")]
+      [JsonConverter(typeof(TolerantEnumConverter))]
       public SignatureOrderStatus signatureOrderStatus { get; set; }
     
       [JsonProperty("signer")]
       public bool signer { get; set; }
     
       [JsonProperty("status")]
+      [JsonConverter(typeof(TolerantEnumConverter))]
       public SignatoryStatus status { get; set; }
     
       [JsonProperty("ui")]
@@ -2458,6 +2530,7 @@ namespace Criipto.Signatures.Models {
       public List<Signatory> signatories { get; set; }
     
       [JsonProperty("status")]
+      [JsonConverter(typeof(TolerantEnumConverter))]
       public SignatureOrderStatus status { get; set; }
     
       /// <summary>
@@ -2474,6 +2547,9 @@ namespace Criipto.Signatures.Models {
     
       [JsonProperty("ui")]
       public SignatureOrderUI ui { get; set; }
+    
+      [JsonProperty("webhook")]
+      public SignatureOrderWebhook webhook { get; set; }
       #endregion
     }
     #endregion
@@ -2529,7 +2605,8 @@ namespace Criipto.Signatures.Models {
       CANCELLED,
       CLOSED,
       EXPIRED,
-      OPEN
+      OPEN,
+      FUTURE_ADDED_VALUE = 999
     }
     
     
@@ -2540,6 +2617,7 @@ namespace Criipto.Signatures.Models {
       public bool disableRejection { get; set; }
     
       [JsonProperty("language")]
+      [JsonConverter(typeof(TolerantEnumConverter))]
       public Language language { get; set; }
     
       [JsonProperty("logo")]
@@ -2606,6 +2684,19 @@ namespace Criipto.Signatures.Models {
     }
     #endregion
     
+    #region SignatureOrderWebhook
+    public class SignatureOrderWebhook {
+      #region members
+      [JsonProperty("logs")]
+      [JsonConverter(typeof(CompositionTypeListConverter))]
+      public List<WebhookInvocation> logs { get; set; }
+    
+      [JsonProperty("url")]
+      public string url { get; set; }
+      #endregion
+    }
+    #endregion
+    
     #region Tenant
     public class Tenant {
       #region members
@@ -2614,6 +2705,10 @@ namespace Criipto.Signatures.Models {
     
       [JsonProperty("id")]
       public string id { get; set; }
+    
+      [JsonProperty("webhookLogs")]
+      [JsonConverter(typeof(CompositionTypeListConverter))]
+      public List<WebhookInvocation> webhookLogs { get; set; }
       #endregion
     }
     #endregion
@@ -2623,6 +2718,7 @@ namespace Criipto.Signatures.Models {
       #region members
       [Required]
       [JsonRequired]
+      [JsonConverter(typeof(TolerantEnumConverter))]
       public SignatoryFrontendEvent @event { get; set; }
       #endregion
     
@@ -2694,6 +2790,7 @@ namespace Criipto.Signatures.Models {
     
       [Required]
       [JsonRequired]
+      [JsonConverter(typeof(TolerantEnumConverter))]
       public SignatoryDocumentStatus status { get; set; }
       #endregion
     
@@ -2756,6 +2853,7 @@ namespace Criipto.Signatures.Models {
       public string domain { get; set; }
     
       [JsonProperty("environment")]
+      [JsonConverter(typeof(TolerantEnumConverter))]
       public VerifyApplicationEnvironment environment { get; set; }
     
       [JsonProperty("realm")]
@@ -2765,12 +2863,229 @@ namespace Criipto.Signatures.Models {
     #endregion
     public enum VerifyApplicationEnvironment {
       PRODUCTION,
-      TEST
+      TEST,
+      FUTURE_ADDED_VALUE = 999
     }
     
+    
+    #region VerifyApplicationQueryInput
+    public class VerifyApplicationQueryInput {
+      #region members
+      [Required]
+      [JsonRequired]
+      public string domain { get; set; }
+    
+      [Required]
+      [JsonRequired]
+      public string realm { get; set; }
+    
+      [Required]
+      [JsonRequired]
+      public string tenantId { get; set; }
+      #endregion
+    
+      #region methods
+      public dynamic GetInputObject()
+      {
+        IDictionary<string, object> d = new System.Dynamic.ExpandoObject();
+    
+        var properties = GetType().GetProperties(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+        foreach (var propertyInfo in properties)
+        {
+          var value = propertyInfo.GetValue(this);
+          var defaultValue = propertyInfo.PropertyType.IsValueType ? Activator.CreateInstance(propertyInfo.PropertyType) : null;
+    
+          var requiredProp = propertyInfo.GetCustomAttributes(typeof(JsonRequiredAttribute), false).Length > 0;
+    
+          if (requiredProp || value != defaultValue)
+          {
+            d[propertyInfo.Name] = value;
+          }
+        }
+        return d;
+      }
+      #endregion
+    }
+    #endregion
     
     public interface Viewer {
       [JsonProperty("id")]
       string id { get; set; }
     }
+    
+    #region WebhookExceptionInvocation
+    public class WebhookExceptionInvocation : WebhookInvocation {
+      #region members
+      [JsonProperty("correlationId")]
+      public string correlationId { get; set; }
+    
+      [JsonProperty("event")]
+      [JsonConverter(typeof(TolerantEnumConverter))]
+      public WebhookInvocationEvent? @event { get; set; }
+    
+      [JsonProperty("exception")]
+      public string exception { get; set; }
+    
+      [JsonProperty("requestBody")]
+      public string requestBody { get; set; }
+    
+      [JsonProperty("responseBody")]
+      public string responseBody { get; set; }
+    
+      [JsonProperty("retryPayload")]
+      public string retryPayload { get; set; }
+    
+      [JsonProperty("retryingAt")]
+      public string retryingAt { get; set; }
+    
+      [JsonProperty("signatureOrderId")]
+      public string signatureOrderId { get; set; }
+    
+      [JsonProperty("timestamp")]
+      public string timestamp { get; set; }
+    
+      [JsonProperty("url")]
+      public string url { get; set; }
+      #endregion
+    }
+    #endregion
+    
+    #region WebhookHttpErrorInvocation
+    public class WebhookHttpErrorInvocation : WebhookInvocation {
+      #region members
+      [JsonProperty("correlationId")]
+      public string correlationId { get; set; }
+    
+      [JsonProperty("event")]
+      [JsonConverter(typeof(TolerantEnumConverter))]
+      public WebhookInvocationEvent? @event { get; set; }
+    
+      [JsonProperty("requestBody")]
+      public string requestBody { get; set; }
+    
+      [JsonProperty("responseBody")]
+      public string responseBody { get; set; }
+    
+      [JsonProperty("responseStatusCode")]
+      public int responseStatusCode { get; set; }
+    
+      [JsonProperty("retryPayload")]
+      public string retryPayload { get; set; }
+    
+      [JsonProperty("retryingAt")]
+      public string retryingAt { get; set; }
+    
+      [JsonProperty("signatureOrderId")]
+      public string signatureOrderId { get; set; }
+    
+      [JsonProperty("timestamp")]
+      public string timestamp { get; set; }
+    
+      [JsonProperty("url")]
+      public string url { get; set; }
+      #endregion
+    }
+    #endregion
+    
+    public interface WebhookInvocation {
+      [JsonProperty("correlationId")]
+      string correlationId { get; set; }
+    
+      [JsonProperty("event")]
+      WebhookInvocationEvent? @event { get; set; }
+    
+      [JsonProperty("requestBody")]
+      string requestBody { get; set; }
+    
+      [JsonProperty("responseBody")]
+      string responseBody { get; set; }
+    
+      [JsonProperty("signatureOrderId")]
+      string signatureOrderId { get; set; }
+    
+      [JsonProperty("timestamp")]
+      string timestamp { get; set; }
+    
+      [JsonProperty("url")]
+      string url { get; set; }
+    }
+    public enum WebhookInvocationEvent {
+      SIGNATORY_DOCUMENT_STATUS_CHANGED,
+      SIGNATORY_DOWNLOAD_LINK_OPENED,
+      SIGNATORY_REJECTED,
+      SIGNATORY_SIGNED,
+      SIGNATORY_SIGN_ERROR,
+      SIGNATORY_SIGN_LINK_OPENED,
+      SIGNATURE_ORDER_EXPIRED,
+      FUTURE_ADDED_VALUE = 999
+    }
+    
+    
+    #region WebhookSuccessfulInvocation
+    public class WebhookSuccessfulInvocation : WebhookInvocation {
+      #region members
+      [JsonProperty("correlationId")]
+      public string correlationId { get; set; }
+    
+      [JsonProperty("event")]
+      [JsonConverter(typeof(TolerantEnumConverter))]
+      public WebhookInvocationEvent? @event { get; set; }
+    
+      [JsonProperty("requestBody")]
+      public string requestBody { get; set; }
+    
+      [JsonProperty("responseBody")]
+      public string responseBody { get; set; }
+    
+      [JsonProperty("responseStatusCode")]
+      public int responseStatusCode { get; set; }
+    
+      [JsonProperty("signatureOrderId")]
+      public string signatureOrderId { get; set; }
+    
+      [JsonProperty("timestamp")]
+      public string timestamp { get; set; }
+    
+      [JsonProperty("url")]
+      public string url { get; set; }
+      #endregion
+    }
+    #endregion
+    
+    #region WebhookTimeoutInvocation
+    public class WebhookTimeoutInvocation : WebhookInvocation {
+      #region members
+      [JsonProperty("correlationId")]
+      public string correlationId { get; set; }
+    
+      [JsonProperty("event")]
+      [JsonConverter(typeof(TolerantEnumConverter))]
+      public WebhookInvocationEvent? @event { get; set; }
+    
+      [JsonProperty("requestBody")]
+      public string requestBody { get; set; }
+    
+      [JsonProperty("responseBody")]
+      public string responseBody { get; set; }
+    
+      [JsonProperty("responseTimeout")]
+      public int responseTimeout { get; set; }
+    
+      [JsonProperty("retryPayload")]
+      public string retryPayload { get; set; }
+    
+      [JsonProperty("retryingAt")]
+      public string retryingAt { get; set; }
+    
+      [JsonProperty("signatureOrderId")]
+      public string signatureOrderId { get; set; }
+    
+      [JsonProperty("timestamp")]
+      public string timestamp { get; set; }
+    
+      [JsonProperty("url")]
+      public string url { get; set; }
+      #endregion
+    }
+    #endregion
   }

@@ -18,7 +18,8 @@ const typesSupressions = [
   'CA1707',
   'CA1720',
   'CA1052',
-  'CA1819'
+  'CA1819',
+  'CA1716'
 ]
 
 const operationsSupressions = [
@@ -44,6 +45,24 @@ for (const compositionType of compositionTypes) {
     if (match.includes('class') || match.includes('interface')) return match;
     var indent = match.match(/^\s+/);
     return (indent ? indent[0] : '') + '[JsonConverter(typeof(CompositionTypeConverter))]\n' + match;
+  });
+}
+
+let enumTypes = [...types.matchAll(/public enum (.+) \{/g)].map(result => result[1]);
+for (const enumType of enumTypes) {
+  const typeRegex = new RegExp(`^(.*?)(public|private|protected) enum ${enumType} {((.|\n)*?)}$`, 'gm');
+  const [match] = Array.from(types.match(typeRegex));
+  const lines = match.split('\n');
+  var indent = lines[lines.length - 2].match(/^\s+/);
+  lines[lines.length - 2] = lines[lines.length - 2] + ',';
+  lines.splice(lines.length - 1, undefined, indent + 'FUTURE_ADDED_VALUE = 999');
+  types = types.replace(match, lines.join('\n'));
+
+  const converterRegex = new RegExp(`^(.*?)(public|private|protected) ${enumType}(.*?)$`, 'gm');
+  types = types.replace(converterRegex, function (match) {
+    if (match.includes('class') || match.includes('interface') || match.includes('enum')) return match;
+    var indent = match.match(/^\s+/);
+    return (indent ? indent[0] : '') + '[JsonConverter(typeof(TolerantEnumConverter))]\n' + match;
   });
 }
 
