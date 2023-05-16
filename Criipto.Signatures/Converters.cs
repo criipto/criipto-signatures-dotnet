@@ -135,6 +135,7 @@ namespace Criipto.Signatures
             if (reader.TokenType == JsonToken.String)
             {
                 string? enumText = reader.Value?.ToString();
+                Console.WriteLine(enumText);
 
                 if (!string.IsNullOrEmpty(enumText))
                 {
@@ -146,30 +147,18 @@ namespace Criipto.Signatures
                     {
                         return Enum.Parse(enumType, match);
                     }
-                }
-            }
-            else if (reader.TokenType == JsonToken.Integer)
-            {
-                int enumVal = Convert.ToInt32(reader.Value, System.Globalization.CultureInfo.CurrentCulture);
-                int[] values = (int[])Enum.GetValues(enumType);
-                if (values.Contains(enumVal))
-                {
-                    return Enum.Parse(enumType, enumVal.ToString(System.Globalization.CultureInfo.CurrentCulture));
-                }
-            }
 
-            if (!isNullable)
-            {
-                string? defaultName = names
-                    .Where(n => string.Equals(n, "FUTURE_ADDED_VALUE", StringComparison.OrdinalIgnoreCase))
-                    .FirstOrDefault();
+                    string? defaultName = names
+                        .Where(n => string.Equals(n, "FUTURE_ADDED_VALUE", StringComparison.OrdinalIgnoreCase))
+                        .FirstOrDefault();
 
-                if (defaultName == null)
-                {
-                    defaultName = names.First();
+                    if (defaultName == null)
+                    {
+                        defaultName = names.First();
+                    }
+
+                    return Enum.Parse(enumType, defaultName);
                 }
-
-                return Enum.Parse(enumType, defaultName);
             }
 
             return null;
