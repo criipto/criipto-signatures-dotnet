@@ -1,6 +1,8 @@
 fragment BasicDocument on Document {
   __typename
-  id   
+  id
+  title
+  reference
 }
 fragment SignedDocument on Document {
   blob

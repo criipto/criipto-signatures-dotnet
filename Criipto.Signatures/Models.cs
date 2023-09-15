@@ -947,6 +947,14 @@ namespace Criipto.Signatures.Models {
       [JsonProperty("title")]
       string title { get; set; }
     }
+    public enum DocumentIdLocation {
+      BOTTOM,
+      LEFT,
+      RIGHT,
+      TOP,
+      FUTURE_ADDED_VALUE = 999
+    }
+    
     
     #region DocumentInput
     public class DocumentInput {
@@ -1553,6 +1561,12 @@ namespace Criipto.Signatures.Models {
       [Required]
       [JsonRequired]
       public byte[] blob { get; set; }
+    
+      /// <summary>
+      /// Will add a unique identifier for the document to the specified margin of each page. Useful when printing signed documents.
+      /// </summary>
+      [JsonConverter(typeof(TolerantEnumConverter))]
+      public DocumentIdLocation? displayDocumentID { get; set; }
     
       /// <summary>
       /// Will not be displayed to signatories, can be used as a reference to your own system.
@@ -2653,7 +2667,7 @@ namespace Criipto.Signatures.Models {
       public string href { get; set; }
     
       /// <summary>
-      /// The image source for the logo. Must be an absolute HTTPS URL.
+      /// The image source for the logo. Must be an absolute HTTPS URL or a valid data: url
       /// </summary>
       [Required]
       [JsonRequired]

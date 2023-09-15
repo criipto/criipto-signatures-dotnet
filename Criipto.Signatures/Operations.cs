@@ -41,6 +41,8 @@ namespace Criipto.Signatures {
         fragment BasicDocument on Document {
           __typename
           id
+          title
+          reference
         }
         fragment BasicSignatory on Signatory {
           id
@@ -111,6 +113,8 @@ namespace Criipto.Signatures {
         fragment BasicDocument on Document {
           __typename
           id
+          title
+          reference
         }
         fragment BasicSignatory on Signatory {
           id
@@ -338,6 +342,8 @@ namespace Criipto.Signatures {
         fragment BasicDocument on Document {
           __typename
           id
+          title
+          reference
         }
         fragment SignedDocument on Document {
           blob
@@ -421,6 +427,8 @@ namespace Criipto.Signatures {
         fragment BasicDocument on Document {
           __typename
           id
+          title
+          reference
         }
         fragment BasicSignatory on Signatory {
           id
@@ -603,6 +611,8 @@ namespace Criipto.Signatures {
         fragment BasicDocument on Document {
           __typename
           id
+          title
+          reference
         }
         fragment SignedDocument on Document {
           blob
