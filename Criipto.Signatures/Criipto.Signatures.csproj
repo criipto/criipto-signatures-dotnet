@@ -1,25 +1,26 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <EnableNETAnalyzers>true</EnableNETAnalyzers>
-    <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
-    <AnalysisMode>All</AnalysisMode>
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <LangVersion>10.0</LangVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <EnableNETAnalyzers>true</EnableNETAnalyzers>
+        <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
+        <AnalysisMode>All</AnalysisMode>
 
-    <PackageId>Criipto.Signatures</PackageId>
-    <Version>1.6.1</Version>
-    <Authors>Mick Hansen</Authors>
-    <Company>Criipto</Company>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-  </PropertyGroup>
+        <PackageId>Criipto.Signatures</PackageId>
+        <Version>1.6.1</Version>
+        <Authors>Mick Hansen</Authors>
+        <Company>Criipto</Company>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="GraphQL" Version="4.7.1" />
-    <PackageReference Include="GraphQL.Client" Version="4.0.2" />
-    <PackageReference Include="GraphQL.Client.Serializer.Newtonsoft" Version="4.0.2" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="GraphQL" Version="4.7.1" />
+        <PackageReference Include="GraphQL.Client" Version="4.0.2" />
+        <PackageReference Include="GraphQL.Client.Serializer.Newtonsoft" Version="4.0.2" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    </ItemGroup>
 </Project>
