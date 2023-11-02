@@ -934,6 +934,9 @@ namespace Criipto.Signatures.Models {
       [JsonProperty("id")]
       string id { get; set; }
     
+      [JsonProperty("originalBlob")]
+      byte[] originalBlob { get; set; }
+    
       [JsonProperty("reference")]
       string reference { get; set; }
     
@@ -959,14 +962,17 @@ namespace Criipto.Signatures.Models {
     #region DocumentInput
     public class DocumentInput {
       #region members
-      [Required]
-      [JsonRequired]
       public PadesDocumentInput pdf { get; set; }
     
       /// <summary>
-      /// When enabled, will remove any existing signatures from the document before storing.
+      /// When enabled, will remove any existing signatures from the document before storing. (PDF only)
       /// </summary>
       public bool? removePreviousSignatures { get; set; }
+    
+      /// <summary>
+      /// XML signing is coming soon, reach out to learn more.
+      /// </summary>
+      public XadesDocumentInput xml { get; set; }
       #endregion
     
       #region methods
@@ -1648,6 +1654,9 @@ namespace Criipto.Signatures.Models {
     
       [JsonProperty("id")]
       public string id { get; set; }
+    
+      [JsonProperty("originalBlob")]
+      public byte[] originalBlob { get; set; }
     
       [JsonProperty("reference")]
       public string reference { get; set; }
@@ -2404,6 +2413,8 @@ namespace Criipto.Signatures.Models {
       #region members
       public List<SignatureAppearanceTemplateInput> displayName { get; set; }
     
+      public List<SignatureAppearanceTemplateInput> headerLeft { get; set; }
+    
       /// <summary>
       /// Render evidence claim as identifier in the signature appearance inside the document. You can supply multiple keys and they will be tried in order. If no key is found a GUID will be rendered.
       /// </summary>
@@ -3099,6 +3110,81 @@ namespace Criipto.Signatures.Models {
     
       [JsonProperty("url")]
       public string url { get; set; }
+      #endregion
+    }
+    #endregion
+    
+    #region XadesDocumentInput
+    public class XadesDocumentInput {
+      #region members
+      [Required]
+      [JsonRequired]
+      public byte[] blob { get; set; }
+    
+      /// <summary>
+      /// Will not be displayed to signatories, can be used as a reference to your own system.
+      /// </summary>
+      public string reference { get; set; }
+    
+      [Required]
+      [JsonRequired]
+      [JsonConverter(typeof(TolerantEnumConverter))]
+      public DocumentStorageMode storageMode { get; set; }
+    
+      [Required]
+      [JsonRequired]
+      public string title { get; set; }
+      #endregion
+    
+      #region methods
+      public dynamic GetInputObject()
+      {
+        IDictionary<string, object> d = new System.Dynamic.ExpandoObject();
+    
+        var properties = GetType().GetProperties(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+        foreach (var propertyInfo in properties)
+        {
+          var value = propertyInfo.GetValue(this);
+          var defaultValue = propertyInfo.PropertyType.IsValueType ? Activator.CreateInstance(propertyInfo.PropertyType) : null;
+    
+          var requiredProp = propertyInfo.GetCustomAttributes(typeof(JsonRequiredAttribute), false).Length > 0;
+    
+          if (requiredProp || value != defaultValue)
+          {
+            d[propertyInfo.Name] = value;
+          }
+        }
+        return d;
+      }
+      #endregion
+    }
+    #endregion
+    
+    #region XmlDocument
+    public class XmlDocument : Document {
+      #region members
+      [JsonProperty("blob")]
+      public byte[] blob { get; set; }
+    
+      [JsonProperty("id")]
+      public string id { get; set; }
+    
+      [JsonProperty("originalBlob")]
+      public byte[] originalBlob { get; set; }
+    
+      [JsonProperty("reference")]
+      public string reference { get; set; }
+    
+      [JsonProperty("signatoryViewerStatus")]
+      [JsonConverter(typeof(TolerantEnumConverter))]
+      public SignatoryDocumentStatus? signatoryViewerStatus { get; set; }
+    
+      [JsonProperty("signatures")]
+      [JsonConverter(typeof(CompositionTypeListConverter))]
+      public List<Signature> signatures { get; set; }
+    
+      [JsonProperty("title")]
+      public string title { get; set; }
       #endregion
     }
     #endregion
