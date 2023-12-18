@@ -1430,6 +1430,9 @@ namespace Criipto.Signatures.Models {
       /// </summary>
       [JsonProperty("updateSignatoryDocumentStatus")]
       public UpdateSignatoryDocumentStatusOutput updateSignatoryDocumentStatus { get; set; }
+    
+      [JsonProperty("validateDocument")]
+      public ValidateDocumentOutput validateDocument { get; set; }
       #endregion
     }
     #endregion
@@ -2867,6 +2870,56 @@ namespace Criipto.Signatures.Models {
     
       [JsonProperty("tenants")]
       public List<Tenant> tenants { get; set; }
+      #endregion
+    }
+    #endregion
+    
+    #region ValidateDocumentInput
+    public class ValidateDocumentInput {
+      #region members
+      public byte[] pdf { get; set; }
+    
+      public byte[] xml { get; set; }
+      #endregion
+    
+      #region methods
+      public dynamic GetInputObject()
+      {
+        IDictionary<string, object> d = new System.Dynamic.ExpandoObject();
+    
+        var properties = GetType().GetProperties(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+        foreach (var propertyInfo in properties)
+        {
+          var value = propertyInfo.GetValue(this);
+          var defaultValue = propertyInfo.PropertyType.IsValueType ? Activator.CreateInstance(propertyInfo.PropertyType) : null;
+    
+          var requiredProp = propertyInfo.GetCustomAttributes(typeof(JsonRequiredAttribute), false).Length > 0;
+    
+          if (requiredProp || value != defaultValue)
+          {
+            d[propertyInfo.Name] = value;
+          }
+        }
+        return d;
+      }
+      #endregion
+    }
+    #endregion
+    
+    #region ValidateDocumentOutput
+    public class ValidateDocumentOutput {
+      #region members
+      [JsonProperty("errors")]
+      public List<string> errors { get; set; }
+    
+      /// <summary>
+      /// Whether or not the errors are fixable using 'fixDocumentFormattingErrors'
+      /// </summary>
+      [JsonProperty("fixable")]
+      public bool? fixable { get; set; }
+    
+      [JsonProperty("valid")]
+      public bool valid { get; set; }
       #endregion
     }
     #endregion
