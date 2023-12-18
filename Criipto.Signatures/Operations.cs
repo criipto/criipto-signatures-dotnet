@@ -518,6 +518,38 @@ namespace Criipto.Signatures {
     }
     
 
+    public class ValidateDocumentMutation {
+      /// <summary>
+      /// ValidateDocumentMutation.Request 
+      /// <para>Required variables:<br/> { input=(ValidateDocumentInput) }</para>
+      /// <para>Optional variables:<br/> {  }</para>
+      /// </summary>
+      public static GraphQLRequest Request(object variables = null) {
+        return new GraphQLRequest {
+          Query = ValidateDocumentDocument,
+          OperationName = "validateDocument",
+          Variables = variables
+        };
+      }
+
+      /// <remarks>This method is obsolete. Use Request instead.</remarks>
+      public static GraphQLRequest getValidateDocumentMutation() {
+        return Request();
+      }
+      
+      public static string ValidateDocumentDocument = @"
+        mutation validateDocument($input: ValidateDocumentInput!) {
+          validateDocument(input: $input) {
+            valid
+            errors
+            fixable
+          }
+        }
+        ";
+      
+    }
+    
+
     public class SignatureOrderQuery {
       /// <summary>
       /// SignatureOrderQuery.Request 

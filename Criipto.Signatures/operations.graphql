@@ -132,6 +132,14 @@ mutation signActingAs($input: SignActingAsInput!) {
   }
 }
 
+mutation validateDocument($input: ValidateDocumentInput!) {
+  validateDocument(input: $input) {
+    valid
+    errors
+    fixable
+  }
+}
+
 query signatureOrder($id: ID!) {
   signatureOrder(id: $id) {
     ... BasicSignatureOrder

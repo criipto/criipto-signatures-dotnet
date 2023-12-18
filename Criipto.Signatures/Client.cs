@@ -320,6 +320,17 @@ public class CriiptoSignaturesClient : IDisposable
         return await SignActingAs(input).ConfigureAwait(false);
     }
 
+    public async Task<ValidateDocumentOutput> ValidateDocument(ValidateDocumentInput input)
+    {
+        if (input == null) throw new ArgumentNullException(nameof(input));
+
+        var data = await SendMutation(
+            ValidateDocumentMutation.Request(new { input = input }),
+            () => new { ValidateDocument = new ValidateDocumentOutput() }
+        ).ConfigureAwait(false);
+        return data.ValidateDocument;
+    }
+
     public async Task<Signatory> SignActingAs(string signatoryId, SignActingAsInput input)
     {
         if (signatoryId == null) throw new ArgumentNullException(nameof(signatoryId));
