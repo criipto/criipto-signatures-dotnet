@@ -204,11 +204,11 @@ public class CriiptoSignaturesClient : IDisposable
         if (input == null) throw new ArgumentNullException(nameof(input));
 
         var data = await SendMutation(
-            ExtendSignatureOrderMutationMutation.Request(new { input = input }),
+            ExtendSignatureOrderMutation.Request(new { input = input }),
             () => new { extendSignatureOrderDocument = new ExtendSignatureOrderOutput() }
         ).ConfigureAwait(false);
         
-        return data.extendSignatureOrder.signatureOrder;
+        return data.extendSignatureOrderDocument.signatureOrder;
     }
 
     public async Task<SignatureOrder> CloseSignatureOrder(CloseSignatureOrderInput input)
