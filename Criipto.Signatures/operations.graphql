@@ -44,6 +44,8 @@ fragment BasicSignatory on Signatory {
 fragment BasicSignatureOrder on SignatureOrder {
   id
   status
+  closedAt
+  expiresAt
 
   signatories {
     ...BasicSignatory

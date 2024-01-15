@@ -135,7 +135,6 @@ namespace Criipto.Signatures
             if (reader.TokenType == JsonToken.String)
             {
                 string? enumText = reader.Value?.ToString();
-                Console.WriteLine(enumText);
 
                 if (!string.IsNullOrEmpty(enumText))
                 {

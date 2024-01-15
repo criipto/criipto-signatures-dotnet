@@ -205,10 +205,18 @@ public class CriiptoSignaturesClient : IDisposable
 
         var data = await SendMutation(
             ExtendSignatureOrderMutation.Request(new { input = input }),
-            () => new { extendSignatureOrderDocument = new ExtendSignatureOrderOutput() }
+            () => new { extendSignatureOrder = new ExtendSignatureOrderOutput() }
         ).ConfigureAwait(false);
-        
-        return data.extendSignatureOrderDocument.signatureOrder;
+
+        return data.extendSignatureOrder.signatureOrder;
+    }
+    public async Task<SignatureOrder> ExtendSignatureOrder(SignatureOrder signatureOrder, ExtendSignatureOrderInput input)
+    {
+        if (signatureOrder == null) throw new ArgumentNullException(nameof(signatureOrder));
+        if (input == null) throw new ArgumentNullException(nameof(input));
+
+        input.signatureOrderId = signatureOrder.id;
+        return await ExtendSignatureOrder(input).ConfigureAwait(false);
     }
 
     public async Task<SignatureOrder> CloseSignatureOrder(CloseSignatureOrderInput input)

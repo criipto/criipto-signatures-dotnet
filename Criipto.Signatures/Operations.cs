@@ -68,6 +68,8 @@ namespace Criipto.Signatures {
         fragment BasicSignatureOrder on SignatureOrder {
           id
           status
+          closedAt
+          expiresAt
           signatories {
             ...BasicSignatory
           }
@@ -140,6 +142,8 @@ namespace Criipto.Signatures {
         fragment BasicSignatureOrder on SignatureOrder {
           id
           status
+          closedAt
+          expiresAt
           signatories {
             ...BasicSignatory
           }
@@ -382,6 +386,8 @@ namespace Criipto.Signatures {
         fragment BasicSignatureOrder on SignatureOrder {
           id
           status
+          closedAt
+          expiresAt
           signatories {
             ...BasicSignatory
           }
@@ -454,6 +460,8 @@ namespace Criipto.Signatures {
         fragment BasicSignatureOrder on SignatureOrder {
           id
           status
+          closedAt
+          expiresAt
           signatories {
             ...BasicSignatory
           }
@@ -610,6 +618,8 @@ namespace Criipto.Signatures {
         fragment BasicSignatureOrder on SignatureOrder {
           id
           status
+          closedAt
+          expiresAt
           signatories {
             ...BasicSignatory
           }
@@ -671,6 +681,8 @@ namespace Criipto.Signatures {
         fragment BasicSignatureOrder on SignatureOrder {
           id
           status
+          closedAt
+          expiresAt
           signatories {
             ...BasicSignatory
           }
@@ -755,6 +767,8 @@ namespace Criipto.Signatures {
         fragment BasicSignatureOrder on SignatureOrder {
           id
           status
+          closedAt
+          expiresAt
           signatories {
             ...BasicSignatory
           }
@@ -819,6 +833,8 @@ namespace Criipto.Signatures {
         fragment BasicSignatureOrder on SignatureOrder {
           id
           status
+          closedAt
+          expiresAt
           signatories {
             ...BasicSignatory
           }
