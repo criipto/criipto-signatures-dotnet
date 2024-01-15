@@ -550,6 +550,78 @@ namespace Criipto.Signatures {
     }
     
 
+    public class ExtendSignatureOrderMutation {
+      /// <summary>
+      /// ExtendSignatureOrderMutation.Request 
+      /// <para>Required variables:<br/> { input=(ExtendSignatureOrderInput) }</para>
+      /// <para>Optional variables:<br/> {  }</para>
+      /// </summary>
+      public static GraphQLRequest Request(object variables = null) {
+        return new GraphQLRequest {
+          Query = ExtendSignatureOrderDocument,
+          OperationName = "extendSignatureOrder",
+          Variables = variables
+        };
+      }
+
+      /// <remarks>This method is obsolete. Use Request instead.</remarks>
+      public static GraphQLRequest getExtendSignatureOrderMutation() {
+        return Request();
+      }
+      
+      public static string ExtendSignatureOrderDocument = @"
+        mutation extendSignatureOrder($input: ExtendSignatureOrderInput!) {
+          extendSignatureOrder(input: $input) {
+            signatureOrder {
+              ...BasicSignatureOrder
+              documents {
+                ...BasicDocument
+              }
+            }
+          }
+        }
+        fragment BasicDocument on Document {
+          __typename
+          id
+          title
+          reference
+        }
+        fragment BasicSignatory on Signatory {
+          id
+          status
+          href
+          downloadHref
+          reference
+          role
+          evidenceProviders {
+            __typename
+            id
+          }
+          documents {
+            edges {
+              status
+              node {
+                __typename
+                id
+              }
+            }
+          }
+        }
+        fragment BasicSignatureOrder on SignatureOrder {
+          id
+          status
+          signatories {
+            ...BasicSignatory
+          }
+          evidenceProviders {
+            __typename
+            id
+          }
+        }";
+      
+    }
+    
+
     public class SignatureOrderQuery {
       /// <summary>
       /// SignatureOrderQuery.Request 

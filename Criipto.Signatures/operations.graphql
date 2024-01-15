@@ -140,6 +140,17 @@ mutation validateDocument($input: ValidateDocumentInput!) {
   }
 }
 
+mutation extendSignatureOrder($input: ExtendSignatureOrderInput!) {
+  extendSignatureOrder(input: $input) {
+    signatureOrder {
+      ... BasicSignatureOrder
+      documents {
+        ...BasicDocument
+      }
+    }
+  }
+}
+
 query signatureOrder($id: ID!) {
   signatureOrder(id: $id) {
     ... BasicSignatureOrder
