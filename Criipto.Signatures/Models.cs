@@ -139,6 +139,51 @@ namespace Criipto.Signatures.Models {
     }
     #endregion
     
+    #region AllOfEvidenceProviderInput
+    public class AllOfEvidenceProviderInput {
+      #region members
+      [Required]
+      [JsonRequired]
+      public List<SingleEvidenceProviderInput> providers { get; set; }
+      #endregion
+    
+      #region methods
+      public dynamic GetInputObject()
+      {
+        IDictionary<string, object> d = new System.Dynamic.ExpandoObject();
+    
+        var properties = GetType().GetProperties(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+        foreach (var propertyInfo in properties)
+        {
+          var value = propertyInfo.GetValue(this);
+          var defaultValue = propertyInfo.PropertyType.IsValueType ? Activator.CreateInstance(propertyInfo.PropertyType) : null;
+    
+          var requiredProp = propertyInfo.GetCustomAttributes(typeof(JsonRequiredAttribute), false).Length > 0;
+    
+          if (requiredProp || value != defaultValue)
+          {
+            d[propertyInfo.Name] = value;
+          }
+        }
+        return d;
+      }
+      #endregion
+    }
+    #endregion
+    
+    #region AllOfSignatureEvidenceProvider
+    public class AllOfSignatureEvidenceProvider : SignatureEvidenceProvider {
+      #region members
+      [JsonProperty("id")]
+      public string id { get; set; }
+    
+      [JsonProperty("providers")]
+      [JsonConverter(typeof(CompositionTypeListConverter))]
+      public List<SingleSignatureEvidenceProvider> providers { get; set; }
+      #endregion
+    }
+    #endregion
+    
     #region AnonymousViewer
     public class AnonymousViewer : Viewer {
       #region members
@@ -399,6 +444,15 @@ namespace Criipto.Signatures.Models {
       #region members
       [JsonProperty("signatureOrder")]
       public SignatureOrder signatureOrder { get; set; }
+      #endregion
+    }
+    #endregion
+    
+    #region CompositeSignature
+    public class CompositeSignature : Signature {
+      #region members
+      [JsonProperty("signatory")]
+      public Signatory signatory { get; set; }
       #endregion
     }
     #endregion
@@ -808,7 +862,7 @@ namespace Criipto.Signatures.Models {
     #endregion
     
     #region CriiptoVerifySignatureEvidenceProvider
-    public class CriiptoVerifySignatureEvidenceProvider : SignatureEvidenceProvider {
+    public class CriiptoVerifySignatureEvidenceProvider : SignatureEvidenceProvider, SingleSignatureEvidenceProvider {
       #region members
       [JsonProperty("acrValues")]
       public List<string> acrValues { get; set; }
@@ -1155,7 +1209,7 @@ namespace Criipto.Signatures.Models {
     #endregion
     
     #region DrawableSignatureEvidenceProvider
-    public class DrawableSignatureEvidenceProvider : SignatureEvidenceProvider {
+    public class DrawableSignatureEvidenceProvider : SignatureEvidenceProvider, SingleSignatureEvidenceProvider {
       #region members
       [JsonProperty("id")]
       public string id { get; set; }
@@ -1177,10 +1231,12 @@ namespace Criipto.Signatures.Models {
     
     #region EvidenceProviderInput
     /// <summary>
-    /// Must define either oidc or noop subsection.
+    /// Must define a evidence provider subsection.
     /// </summary>
     public class EvidenceProviderInput {
       #region members
+      public AllOfEvidenceProviderInput allOf { get; set; }
+    
       /// <summary>
       /// Criipto Verify based evidence for signatures.
       /// </summary>
@@ -1473,7 +1529,7 @@ namespace Criipto.Signatures.Models {
     #endregion
     
     #region NoopSignatureEvidenceProvider
-    public class NoopSignatureEvidenceProvider : SignatureEvidenceProvider {
+    public class NoopSignatureEvidenceProvider : SignatureEvidenceProvider, SingleSignatureEvidenceProvider {
       #region members
       [JsonProperty("id")]
       public string id { get; set; }
@@ -1541,7 +1597,7 @@ namespace Criipto.Signatures.Models {
     #endregion
     
     #region OidcJWTSignatureEvidenceProvider
-    public class OidcJWTSignatureEvidenceProvider : SignatureEvidenceProvider {
+    public class OidcJWTSignatureEvidenceProvider : SignatureEvidenceProvider, SingleSignatureEvidenceProvider {
       #region members
       [JsonProperty("acrValues")]
       public List<string> acrValues { get; set; }
@@ -1939,6 +1995,42 @@ namespace Criipto.Signatures.Models {
     }
     #endregion
     
+    #region SignAllOfInput
+    public class SignAllOfInput {
+      #region members
+      public SignCriiptoVerifyInput criiptoVerify { get; set; }
+    
+      public SignDrawableInput drawable { get; set; }
+    
+      public bool? noop { get; set; }
+    
+      public SignOidcInput oidc { get; set; }
+      #endregion
+    
+      #region methods
+      public dynamic GetInputObject()
+      {
+        IDictionary<string, object> d = new System.Dynamic.ExpandoObject();
+    
+        var properties = GetType().GetProperties(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+        foreach (var propertyInfo in properties)
+        {
+          var value = propertyInfo.GetValue(this);
+          var defaultValue = propertyInfo.PropertyType.IsValueType ? Activator.CreateInstance(propertyInfo.PropertyType) : null;
+    
+          var requiredProp = propertyInfo.GetCustomAttributes(typeof(JsonRequiredAttribute), false).Length > 0;
+    
+          if (requiredProp || value != defaultValue)
+          {
+            d[propertyInfo.Name] = value;
+          }
+        }
+        return d;
+      }
+      #endregion
+    }
+    #endregion
+    
     #region SignCriiptoVerifyInput
     public class SignCriiptoVerifyInput {
       #region members
@@ -2008,6 +2100,8 @@ namespace Criipto.Signatures.Models {
     #region SignInput
     public class SignInput {
       #region members
+      public SignAllOfInput allOf { get; set; }
+    
       public SignCriiptoVerifyInput criiptoVerify { get; set; }
     
       public SignDrawableInput drawable { get; set; }
@@ -2724,6 +2818,62 @@ namespace Criipto.Signatures.Models {
       #endregion
     }
     #endregion
+    
+    #region SingleEvidenceProviderInput
+    /// <summary>
+    /// Must define a evidence provider subsection.
+    /// </summary>
+    public class SingleEvidenceProviderInput {
+      #region members
+      /// <summary>
+      /// Criipto Verify based evidence for signatures.
+      /// </summary>
+      public CriiptoVerifyProviderInput criiptoVerify { get; set; }
+    
+      /// <summary>
+      /// Hand drawn signature evidence for signatures.
+      /// </summary>
+      public DrawableEvidenceProviderInput drawable { get; set; }
+    
+      /// <summary>
+      /// TEST environment only. Does not manipulate the PDF, use for integration or webhook testing.
+      /// </summary>
+      public NoopEvidenceProviderInput noop { get; set; }
+    
+      /// <summary>
+      /// OIDC/JWT based evidence for signatures.
+      /// </summary>
+      public OidcEvidenceProviderInput oidc { get; set; }
+      #endregion
+    
+      #region methods
+      public dynamic GetInputObject()
+      {
+        IDictionary<string, object> d = new System.Dynamic.ExpandoObject();
+    
+        var properties = GetType().GetProperties(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+        foreach (var propertyInfo in properties)
+        {
+          var value = propertyInfo.GetValue(this);
+          var defaultValue = propertyInfo.PropertyType.IsValueType ? Activator.CreateInstance(propertyInfo.PropertyType) : null;
+    
+          var requiredProp = propertyInfo.GetCustomAttributes(typeof(JsonRequiredAttribute), false).Length > 0;
+    
+          if (requiredProp || value != defaultValue)
+          {
+            d[propertyInfo.Name] = value;
+          }
+        }
+        return d;
+      }
+      #endregion
+    }
+    #endregion
+    
+    public interface SingleSignatureEvidenceProvider {
+      [JsonProperty("id")]
+      string id { get; set; }
+    }
     
     #region Tenant
     public class Tenant {
