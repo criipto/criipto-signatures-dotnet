@@ -137,7 +137,7 @@ public class CreateSignatureOrderTests
                                         criiptoVerify = new CriiptoVerifyProviderInput() {
                                             alwaysRedirect = true
                                         }
-                                    }
+                                    },
                                     new SingleEvidenceProviderInput() {
                                         drawable = new DrawableEvidenceProviderInput() {
                                             requireName = false
