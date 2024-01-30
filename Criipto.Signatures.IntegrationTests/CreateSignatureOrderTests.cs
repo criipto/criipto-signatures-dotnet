@@ -115,4 +115,48 @@ public class CreateSignatureOrderTests
             Assert.NotNull(signatureOrder?.id);
         }
     }
+
+    [Fact]
+    public async void MutationSupportsComposite()
+    {
+        using (var client = new CriiptoSignaturesClient(Dsl.CLIENT_ID, Dsl.CLIENT_SECRET, "test"))
+        {
+            var signatureOrder = await client.CreateSignatureOrder(
+                new CreateSignatureOrderInput()
+                {
+                    title = "Title",
+                    expiresInDays = 1,
+                    documents = DefaultDocuments,
+                    disableVerifyEvidenceProvider = true,
+                    evidenceProviders = new List<EvidenceProviderInput>() {
+                        new EvidenceProviderInput() {
+                            enabledByDefault = true,
+                            allOf = new AllOfEvidenceProviderInput() {
+                                providers = new List<SingleEvidenceProviderInput>() {
+                                    new SingleEvidenceProviderInput() {
+                                        criiptoVerify = new CriiptoVerifyProviderInput() {
+                                            alwaysRedirect = true
+                                        }
+                                    }
+                                    new SingleEvidenceProviderInput() {
+                                        drawable = new DrawableEvidenceProviderInput() {
+                                            requireName = false
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            );
+
+            Assert.NotNull(signatureOrder?.id);
+
+            var drawable =
+                signatureOrder!.evidenceProviders
+                    .Where(e => e is AllOfSignatureEvidenceProvider)
+                    .First();
+            Assert.NotNull(signatureOrder?.id);
+        }
+    }
 }
