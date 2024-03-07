@@ -1,0 +1,16 @@
+name: Publish Package to nuget
+on:
+  release:
+    types: [published]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '7.0.201'
+      - run: dotnet test
+        working-directory: Criipto.Signatures.UnitTests
+      - run: dotnet pack -c Release Criipto.Signatures
+      - run: dotnet nuget push Criipto.Signatures/bin/Release/Criipto.Signatures.*.nupkg --api-key ${{ secrets.NUGET_TOKEN }} --source https://api.nuget.org/v3/index.json
