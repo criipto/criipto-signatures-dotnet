@@ -1620,6 +1620,38 @@ namespace Criipto.Signatures.Models {
     }
     #endregion
     
+    #region PadesDocumentFormInput
+    public class PadesDocumentFormInput {
+      #region members
+      [Required]
+      [JsonRequired]
+      public bool enabled { get; set; }
+      #endregion
+    
+      #region methods
+      public dynamic GetInputObject()
+      {
+        IDictionary<string, object> d = new System.Dynamic.ExpandoObject();
+    
+        var properties = GetType().GetProperties(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+        foreach (var propertyInfo in properties)
+        {
+          var value = propertyInfo.GetValue(this);
+          var defaultValue = propertyInfo.PropertyType.IsValueType ? Activator.CreateInstance(propertyInfo.PropertyType) : null;
+    
+          var requiredProp = propertyInfo.GetCustomAttributes(typeof(JsonRequiredAttribute), false).Length > 0;
+    
+          if (requiredProp || value != defaultValue)
+          {
+            d[propertyInfo.Name] = value;
+          }
+        }
+        return d;
+      }
+      #endregion
+    }
+    #endregion
+    
     #region PadesDocumentInput
     public class PadesDocumentInput {
       #region members
@@ -1632,6 +1664,8 @@ namespace Criipto.Signatures.Models {
       /// </summary>
       [JsonConverter(typeof(TolerantEnumConverter))]
       public DocumentIdLocation? displayDocumentID { get; set; }
+    
+      public PadesDocumentFormInput form { get; set; }
     
       /// <summary>
       /// Will not be displayed to signatories, can be used as a reference to your own system.
@@ -1711,6 +1745,9 @@ namespace Criipto.Signatures.Models {
       [JsonProperty("blob")]
       public byte[] blob { get; set; }
     
+      [JsonProperty("form")]
+      public PdfDocumentForm form { get; set; }
+    
       [JsonProperty("id")]
       public string id { get; set; }
     
@@ -1730,6 +1767,15 @@ namespace Criipto.Signatures.Models {
     
       [JsonProperty("title")]
       public string title { get; set; }
+      #endregion
+    }
+    #endregion
+    
+    #region PdfDocumentForm
+    public class PdfDocumentForm {
+      #region members
+      [JsonProperty("enabled")]
+      public bool enabled { get; set; }
       #endregion
     }
     #endregion
@@ -2063,6 +2109,108 @@ namespace Criipto.Signatures.Models {
     }
     #endregion
     
+    #region SignDocumentFormFieldInput
+    public class SignDocumentFormFieldInput {
+      #region members
+      [Required]
+      [JsonRequired]
+      public string field { get; set; }
+    
+      [Required]
+      [JsonRequired]
+      public string value { get; set; }
+      #endregion
+    
+      #region methods
+      public dynamic GetInputObject()
+      {
+        IDictionary<string, object> d = new System.Dynamic.ExpandoObject();
+    
+        var properties = GetType().GetProperties(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+        foreach (var propertyInfo in properties)
+        {
+          var value = propertyInfo.GetValue(this);
+          var defaultValue = propertyInfo.PropertyType.IsValueType ? Activator.CreateInstance(propertyInfo.PropertyType) : null;
+    
+          var requiredProp = propertyInfo.GetCustomAttributes(typeof(JsonRequiredAttribute), false).Length > 0;
+    
+          if (requiredProp || value != defaultValue)
+          {
+            d[propertyInfo.Name] = value;
+          }
+        }
+        return d;
+      }
+      #endregion
+    }
+    #endregion
+    
+    #region SignDocumentFormInput
+    public class SignDocumentFormInput {
+      #region members
+      [Required]
+      [JsonRequired]
+      public List<SignDocumentFormFieldInput> fields { get; set; }
+      #endregion
+    
+      #region methods
+      public dynamic GetInputObject()
+      {
+        IDictionary<string, object> d = new System.Dynamic.ExpandoObject();
+    
+        var properties = GetType().GetProperties(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+        foreach (var propertyInfo in properties)
+        {
+          var value = propertyInfo.GetValue(this);
+          var defaultValue = propertyInfo.PropertyType.IsValueType ? Activator.CreateInstance(propertyInfo.PropertyType) : null;
+    
+          var requiredProp = propertyInfo.GetCustomAttributes(typeof(JsonRequiredAttribute), false).Length > 0;
+    
+          if (requiredProp || value != defaultValue)
+          {
+            d[propertyInfo.Name] = value;
+          }
+        }
+        return d;
+      }
+      #endregion
+    }
+    #endregion
+    
+    #region SignDocumentInput
+    public class SignDocumentInput {
+      #region members
+      public SignDocumentFormInput form { get; set; }
+    
+      [Required]
+      [JsonRequired]
+      public string id { get; set; }
+      #endregion
+    
+      #region methods
+      public dynamic GetInputObject()
+      {
+        IDictionary<string, object> d = new System.Dynamic.ExpandoObject();
+    
+        var properties = GetType().GetProperties(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+        foreach (var propertyInfo in properties)
+        {
+          var value = propertyInfo.GetValue(this);
+          var defaultValue = propertyInfo.PropertyType.IsValueType ? Activator.CreateInstance(propertyInfo.PropertyType) : null;
+    
+          var requiredProp = propertyInfo.GetCustomAttributes(typeof(JsonRequiredAttribute), false).Length > 0;
+    
+          if (requiredProp || value != defaultValue)
+          {
+            d[propertyInfo.Name] = value;
+          }
+        }
+        return d;
+      }
+      #endregion
+    }
+    #endregion
+    
     #region SignDrawableInput
     public class SignDrawableInput {
       #region members
@@ -2103,6 +2251,8 @@ namespace Criipto.Signatures.Models {
       public SignAllOfInput allOf { get; set; }
     
       public SignCriiptoVerifyInput criiptoVerify { get; set; }
+    
+      public List<SignDocumentInput> documents { get; set; }
     
       public SignDrawableInput drawable { get; set; }
     
