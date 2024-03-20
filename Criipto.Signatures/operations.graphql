@@ -26,6 +26,10 @@ fragment BasicSignatory on Signatory {
   reference
   role
 
+  signatureOrder {
+    id
+  }
+
   evidenceProviders {
     __typename
     id

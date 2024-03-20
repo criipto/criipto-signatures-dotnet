@@ -381,6 +381,16 @@ public class CriiptoSignaturesClient : IDisposable
         return await DeleteSignatory(input).ConfigureAwait(false);
     }
 
+    public async Task<SignatureOrder> DeleteSignatory(Signatory signatory)
+    {
+        if (signatory == null) throw new ArgumentNullException(nameof(signatory));
+
+        var input = new DeleteSignatoryInput();
+        input.signatureOrderId = signatory.signatureOrder.id;
+        input.signatoryId = signatory.id;
+        return await DeleteSignatory(input).ConfigureAwait(false);
+    }
+
     public async Task<SignatureOrder?> QuerySignatureOrder(string signatureOrderId, bool includeDocuments = false)
     {
         if (signatureOrderId == null) throw new ArgumentNullException(nameof(signatureOrderId));

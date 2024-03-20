@@ -9,7 +9,7 @@ public class DeleteSignatoryTests
 {
 
     [Fact]
-    public async void MutationChangesDeletesSignatory()
+    public async void MutationDeletesSignatory()
     {
         using (var client = new CriiptoSignaturesClient(Dsl.CLIENT_ID, Dsl.CLIENT_SECRET, "test"))
         {
@@ -36,16 +36,8 @@ public class DeleteSignatoryTests
                 signatureOrder
             );
 
-            var soDrawable =
-                signatureOrder!.evidenceProviders
-                    .Where(e => e is DrawableSignatureEvidenceProvider)
-                    .First();
-
             // Act
-            var actual = await client.DeleteSignatory(
-                signatureOrder.id,
-                signatory.id
-            );
+            var actual = await client.DeleteSignatory(signatory);
 
             // Assert
             Assert.Empty(actual.signatories);
