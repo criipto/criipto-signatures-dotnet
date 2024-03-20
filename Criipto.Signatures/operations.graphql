@@ -26,6 +26,10 @@ fragment BasicSignatory on Signatory {
   reference
   role
 
+  signatureOrder {
+    id
+  }
+
   evidenceProviders {
     __typename
     id
@@ -149,6 +153,14 @@ mutation extendSignatureOrder($input: ExtendSignatureOrderInput!) {
       documents {
         ...BasicDocument
       }
+    }
+  }
+}
+
+mutation deleteSignatory($input: DeleteSignatoryInput!) {
+  deleteSignatory(input: $input) {
+    signatureOrder {
+      ... BasicSignatureOrder
     }
   }
 }

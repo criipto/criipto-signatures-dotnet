@@ -360,6 +360,37 @@ public class CriiptoSignaturesClient : IDisposable
         return await SignActingAs(input).ConfigureAwait(false);
     }
 
+    public async Task<SignatureOrder> DeleteSignatory(DeleteSignatoryInput input)
+    {
+        var data = await SendMutation(
+            DeleteSignatoryMutation.Request(new { input = input }),
+            () => new { deleteSignatory = new DeleteSignatoryOutput() }
+        ).ConfigureAwait(false);
+
+        return data.deleteSignatory.signatureOrder;
+    }
+
+    public async Task<SignatureOrder> DeleteSignatory(string signatureOrderId, string signatoryId)
+    {
+        if (signatureOrderId == null) throw new ArgumentNullException(nameof(signatureOrderId));
+        if (signatoryId == null) throw new ArgumentNullException(nameof(signatoryId));
+
+        var input = new DeleteSignatoryInput();
+        input.signatureOrderId = signatureOrderId;
+        input.signatoryId = signatoryId;
+        return await DeleteSignatory(input).ConfigureAwait(false);
+    }
+
+    public async Task<SignatureOrder> DeleteSignatory(Signatory signatory)
+    {
+        if (signatory == null) throw new ArgumentNullException(nameof(signatory));
+
+        var input = new DeleteSignatoryInput();
+        input.signatureOrderId = signatory.signatureOrder.id;
+        input.signatoryId = signatory.id;
+        return await DeleteSignatory(input).ConfigureAwait(false);
+    }
+
     public async Task<SignatureOrder?> QuerySignatureOrder(string signatureOrderId, bool includeDocuments = false)
     {
         if (signatureOrderId == null) throw new ArgumentNullException(nameof(signatureOrderId));

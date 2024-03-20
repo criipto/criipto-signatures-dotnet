@@ -51,6 +51,9 @@ namespace Criipto.Signatures {
           downloadHref
           reference
           role
+          signatureOrder {
+            id
+          }
           evidenceProviders {
             __typename
             id
@@ -125,6 +128,9 @@ namespace Criipto.Signatures {
           downloadHref
           reference
           role
+          signatureOrder {
+            id
+          }
           evidenceProviders {
             __typename
             id
@@ -190,6 +196,9 @@ namespace Criipto.Signatures {
           downloadHref
           reference
           role
+          signatureOrder {
+            id
+          }
           evidenceProviders {
             __typename
             id
@@ -242,6 +251,9 @@ namespace Criipto.Signatures {
           downloadHref
           reference
           role
+          signatureOrder {
+            id
+          }
           evidenceProviders {
             __typename
             id
@@ -294,6 +306,9 @@ namespace Criipto.Signatures {
           downloadHref
           reference
           role
+          signatureOrder {
+            id
+          }
           evidenceProviders {
             __typename
             id
@@ -369,6 +384,9 @@ namespace Criipto.Signatures {
           downloadHref
           reference
           role
+          signatureOrder {
+            id
+          }
           evidenceProviders {
             __typename
             id
@@ -443,6 +461,9 @@ namespace Criipto.Signatures {
           downloadHref
           reference
           role
+          signatureOrder {
+            id
+          }
           evidenceProviders {
             __typename
             id
@@ -508,6 +529,9 @@ namespace Criipto.Signatures {
           downloadHref
           reference
           role
+          signatureOrder {
+            id
+          }
           evidenceProviders {
             __typename
             id
@@ -601,6 +625,77 @@ namespace Criipto.Signatures {
           downloadHref
           reference
           role
+          signatureOrder {
+            id
+          }
+          evidenceProviders {
+            __typename
+            id
+          }
+          documents {
+            edges {
+              status
+              node {
+                __typename
+                id
+              }
+            }
+          }
+        }
+        fragment BasicSignatureOrder on SignatureOrder {
+          id
+          status
+          closedAt
+          expiresAt
+          signatories {
+            ...BasicSignatory
+          }
+          evidenceProviders {
+            __typename
+            id
+          }
+        }";
+      
+    }
+    
+
+    public class DeleteSignatoryMutation {
+      /// <summary>
+      /// DeleteSignatoryMutation.Request 
+      /// <para>Required variables:<br/> { input=(DeleteSignatoryInput) }</para>
+      /// <para>Optional variables:<br/> {  }</para>
+      /// </summary>
+      public static GraphQLRequest Request(object variables = null) {
+        return new GraphQLRequest {
+          Query = DeleteSignatoryDocument,
+          OperationName = "deleteSignatory",
+          Variables = variables
+        };
+      }
+
+      /// <remarks>This method is obsolete. Use Request instead.</remarks>
+      public static GraphQLRequest getDeleteSignatoryMutation() {
+        return Request();
+      }
+      
+      public static string DeleteSignatoryDocument = @"
+        mutation deleteSignatory($input: DeleteSignatoryInput!) {
+          deleteSignatory(input: $input) {
+            signatureOrder {
+              ...BasicSignatureOrder
+            }
+          }
+        }
+        fragment BasicSignatory on Signatory {
+          id
+          status
+          href
+          downloadHref
+          reference
+          role
+          signatureOrder {
+            id
+          }
           evidenceProviders {
             __typename
             id
@@ -664,6 +759,9 @@ namespace Criipto.Signatures {
           downloadHref
           reference
           role
+          signatureOrder {
+            id
+          }
           evidenceProviders {
             __typename
             id
@@ -750,6 +848,9 @@ namespace Criipto.Signatures {
           downloadHref
           reference
           role
+          signatureOrder {
+            id
+          }
           evidenceProviders {
             __typename
             id
@@ -816,6 +917,9 @@ namespace Criipto.Signatures {
           downloadHref
           reference
           role
+          signatureOrder {
+            id
+          }
           evidenceProviders {
             __typename
             id
