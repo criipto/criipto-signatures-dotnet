@@ -157,6 +157,7 @@ public class CreateSignatureOrderTests
                     .Where(e => e is AllOfSignatureEvidenceProvider)
                     .First();
             Assert.NotNull(signatureOrder?.id);
+            Assert.Equal(SignatureOrderStatus.OPEN, signatureOrder?.status);
         }
     }
 }

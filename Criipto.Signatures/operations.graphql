@@ -28,6 +28,9 @@ fragment BasicSignatory on Signatory {
 
   signatureOrder {
     id
+    status
+    closedAt
+    expiresAt
   }
 
   evidenceProviders {

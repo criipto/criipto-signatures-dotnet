@@ -41,6 +41,8 @@ public class QuerySignatoryTests
             // Assert
             Assert.NotNull(actual?.id);
             Assert.Equal(signatory.id, actual!.id);
+            Assert.Equal(SignatoryStatus.OPEN, signatory.status);
+            Assert.Equal(SignatureOrderStatus.OPEN, signatory.signatureOrder.status);
         }
     }
 

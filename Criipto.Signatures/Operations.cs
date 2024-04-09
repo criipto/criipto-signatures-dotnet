@@ -53,6 +53,9 @@ namespace Criipto.Signatures {
           role
           signatureOrder {
             id
+            status
+            closedAt
+            expiresAt
           }
           evidenceProviders {
             __typename
@@ -130,6 +133,9 @@ namespace Criipto.Signatures {
           role
           signatureOrder {
             id
+            status
+            closedAt
+            expiresAt
           }
           evidenceProviders {
             __typename
@@ -198,6 +204,9 @@ namespace Criipto.Signatures {
           role
           signatureOrder {
             id
+            status
+            closedAt
+            expiresAt
           }
           evidenceProviders {
             __typename
@@ -253,6 +262,9 @@ namespace Criipto.Signatures {
           role
           signatureOrder {
             id
+            status
+            closedAt
+            expiresAt
           }
           evidenceProviders {
             __typename
@@ -308,6 +320,9 @@ namespace Criipto.Signatures {
           role
           signatureOrder {
             id
+            status
+            closedAt
+            expiresAt
           }
           evidenceProviders {
             __typename
@@ -386,6 +401,9 @@ namespace Criipto.Signatures {
           role
           signatureOrder {
             id
+            status
+            closedAt
+            expiresAt
           }
           evidenceProviders {
             __typename
@@ -463,6 +481,9 @@ namespace Criipto.Signatures {
           role
           signatureOrder {
             id
+            status
+            closedAt
+            expiresAt
           }
           evidenceProviders {
             __typename
@@ -531,6 +552,9 @@ namespace Criipto.Signatures {
           role
           signatureOrder {
             id
+            status
+            closedAt
+            expiresAt
           }
           evidenceProviders {
             __typename
@@ -627,6 +651,9 @@ namespace Criipto.Signatures {
           role
           signatureOrder {
             id
+            status
+            closedAt
+            expiresAt
           }
           evidenceProviders {
             __typename
@@ -695,6 +722,9 @@ namespace Criipto.Signatures {
           role
           signatureOrder {
             id
+            status
+            closedAt
+            expiresAt
           }
           evidenceProviders {
             __typename
@@ -761,6 +791,9 @@ namespace Criipto.Signatures {
           role
           signatureOrder {
             id
+            status
+            closedAt
+            expiresAt
           }
           evidenceProviders {
             __typename
@@ -850,6 +883,9 @@ namespace Criipto.Signatures {
           role
           signatureOrder {
             id
+            status
+            closedAt
+            expiresAt
           }
           evidenceProviders {
             __typename
@@ -919,6 +955,9 @@ namespace Criipto.Signatures {
           role
           signatureOrder {
             id
+            status
+            closedAt
+            expiresAt
           }
           evidenceProviders {
             __typename
