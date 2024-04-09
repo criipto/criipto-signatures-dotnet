@@ -131,7 +131,15 @@ namespace Criipto.Signatures
             if (enumType == null) return null;
 
             string[] names = Enum.GetNames(enumType);
+            string? defaultName = names
+                .Where(n => string.Equals(n, "FUTURE_ADDED_VALUE", StringComparison.OrdinalIgnoreCase))
+                .FirstOrDefault();
 
+            if (reader.TokenType == JsonToken.Null)
+            {
+                if (defaultName == null) return null;
+                return Enum.Parse(enumType, defaultName);
+            }
             if (reader.TokenType == JsonToken.String)
             {
                 string? enumText = reader.Value?.ToString();
@@ -147,14 +155,7 @@ namespace Criipto.Signatures
                         return Enum.Parse(enumType, match);
                     }
 
-                    string? defaultName = names
-                        .Where(n => string.Equals(n, "FUTURE_ADDED_VALUE", StringComparison.OrdinalIgnoreCase))
-                        .FirstOrDefault();
-
-                    if (defaultName == null)
-                    {
-                        defaultName = names.First();
-                    }
+                    if (defaultName == null) return null;
 
                     return Enum.Parse(enumType, defaultName);
                 }
