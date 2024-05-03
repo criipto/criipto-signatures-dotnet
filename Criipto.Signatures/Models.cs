@@ -832,6 +832,11 @@ namespace Criipto.Signatures.Models {
       public string message { get; set; }
     
       /// <summary>
+      /// Set a custom scope for the underlying authentication request.
+      /// </summary>
+      public string scope { get; set; }
+    
+      /// <summary>
       /// Enforces that signatories sign by unique evidence by comparing the values of previous evidence on the key you define. For Criipto Verify you likely want to use `sub` which is a unique pseudonym value present in all e-ID tokens issued.
       /// </summary>
       public string uniqueEvidenceKey { get; set; }
@@ -887,6 +892,9 @@ namespace Criipto.Signatures.Models {
     
       [JsonProperty("name")]
       public string name { get; set; }
+    
+      [JsonProperty("scope")]
+      public string scope { get; set; }
       #endregion
     }
     #endregion

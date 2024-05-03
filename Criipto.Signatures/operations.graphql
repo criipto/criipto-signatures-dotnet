@@ -21,6 +21,7 @@ fragment SignedDocument on Document {
 fragment BasicSignatory on Signatory {
   id
   status
+  statusReason
   href
   downloadHref
   reference

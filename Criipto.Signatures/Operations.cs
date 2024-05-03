@@ -47,6 +47,7 @@ namespace Criipto.Signatures {
         fragment BasicSignatory on Signatory {
           id
           status
+          statusReason
           href
           downloadHref
           reference
@@ -127,6 +128,7 @@ namespace Criipto.Signatures {
         fragment BasicSignatory on Signatory {
           id
           status
+          statusReason
           href
           downloadHref
           reference
@@ -198,6 +200,7 @@ namespace Criipto.Signatures {
         fragment BasicSignatory on Signatory {
           id
           status
+          statusReason
           href
           downloadHref
           reference
@@ -256,6 +259,7 @@ namespace Criipto.Signatures {
         fragment BasicSignatory on Signatory {
           id
           status
+          statusReason
           href
           downloadHref
           reference
@@ -314,6 +318,7 @@ namespace Criipto.Signatures {
         fragment BasicSignatory on Signatory {
           id
           status
+          statusReason
           href
           downloadHref
           reference
@@ -395,6 +400,7 @@ namespace Criipto.Signatures {
         fragment BasicSignatory on Signatory {
           id
           status
+          statusReason
           href
           downloadHref
           reference
@@ -475,6 +481,7 @@ namespace Criipto.Signatures {
         fragment BasicSignatory on Signatory {
           id
           status
+          statusReason
           href
           downloadHref
           reference
@@ -546,6 +553,7 @@ namespace Criipto.Signatures {
         fragment BasicSignatory on Signatory {
           id
           status
+          statusReason
           href
           downloadHref
           reference
@@ -645,6 +653,7 @@ namespace Criipto.Signatures {
         fragment BasicSignatory on Signatory {
           id
           status
+          statusReason
           href
           downloadHref
           reference
@@ -716,6 +725,7 @@ namespace Criipto.Signatures {
         fragment BasicSignatory on Signatory {
           id
           status
+          statusReason
           href
           downloadHref
           reference
@@ -785,6 +795,7 @@ namespace Criipto.Signatures {
         fragment BasicSignatory on Signatory {
           id
           status
+          statusReason
           href
           downloadHref
           reference
@@ -877,6 +888,7 @@ namespace Criipto.Signatures {
         fragment BasicSignatory on Signatory {
           id
           status
+          statusReason
           href
           downloadHref
           reference
@@ -949,6 +961,7 @@ namespace Criipto.Signatures {
         fragment BasicSignatory on Signatory {
           id
           status
+          statusReason
           href
           downloadHref
           reference
