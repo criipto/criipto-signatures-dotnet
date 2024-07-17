@@ -453,6 +453,10 @@ namespace Criipto.Signatures.Models {
       #region members
       [JsonProperty("signatory")]
       public Signatory signatory { get; set; }
+    
+      [JsonProperty("signatures")]
+      [JsonConverter(typeof(CompositionTypeListConverter))]
+      public List<SingleSignature> signatures { get; set; }
       #endregion
     }
     #endregion
@@ -1202,7 +1206,7 @@ namespace Criipto.Signatures.Models {
     #endregion
     
     #region DrawableSignature
-    public class DrawableSignature : Signature {
+    public class DrawableSignature : Signature, SingleSignature {
       #region members
       [JsonProperty("image")]
       public byte[] image { get; set; }
@@ -1229,7 +1233,7 @@ namespace Criipto.Signatures.Models {
     #endregion
     
     #region EmptySignature
-    public class EmptySignature : Signature {
+    public class EmptySignature : Signature, SingleSignature {
       #region members
       [JsonProperty("signatory")]
       public Signatory signatory { get; set; }
@@ -1353,7 +1357,7 @@ namespace Criipto.Signatures.Models {
     #endregion
     
     #region JWTSignature
-    public class JWTSignature : Signature {
+    public class JWTSignature : Signature, SingleSignature {
       #region members
       [JsonProperty("jwks")]
       public string jwks { get; set; }
@@ -2517,9 +2521,31 @@ namespace Criipto.Signatures.Models {
     #region SignatoryEvidenceProviderInput
     public class SignatoryEvidenceProviderInput {
       #region members
+      public AllOfEvidenceProviderInput allOf { get; set; }
+    
+      /// <summary>
+      /// Criipto Verify based evidence for signatures.
+      /// </summary>
+      public CriiptoVerifyProviderInput criiptoVerify { get; set; }
+    
+      /// <summary>
+      /// Hand drawn signature evidence for signatures.
+      /// </summary>
+      public DrawableEvidenceProviderInput drawable { get; set; }
+    
       [Required]
       [JsonRequired]
       public string id { get; set; }
+    
+      /// <summary>
+      /// TEST environment only. Does not manipulate the PDF, use for integration or webhook testing.
+      /// </summary>
+      public NoopEvidenceProviderInput noop { get; set; }
+    
+      /// <summary>
+      /// OIDC/JWT based evidence for signatures.
+      /// </summary>
+      public OidcEvidenceProviderInput oidc { get; set; }
       #endregion
     
       #region methods
@@ -2549,12 +2575,12 @@ namespace Criipto.Signatures.Models {
     #region SignatoryEvidenceValidationInput
     public class SignatoryEvidenceValidationInput {
       #region members
+      public bool? boolean { get; set; }
+    
       [Required]
       [JsonRequired]
       public string key { get; set; }
     
-      [Required]
-      [JsonRequired]
       public string value { get; set; }
       #endregion
     
@@ -3027,6 +3053,11 @@ namespace Criipto.Signatures.Models {
       #endregion
     }
     #endregion
+    
+    public interface SingleSignature {
+      [JsonProperty("signatory")]
+      Signatory signatory { get; set; }
+    }
     
     public interface SingleSignatureEvidenceProvider {
       [JsonProperty("id")]
