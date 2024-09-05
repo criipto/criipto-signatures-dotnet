@@ -77,6 +77,9 @@ namespace Criipto.Signatures.Models {
     #region AddSignatoryInput
     public class AddSignatoryInput {
       #region members
+      /// <summary>
+      /// Define a subset of documents for the signatory. Must be a non-empty list. Leave null for all documents.
+      /// </summary>
       public List<SignatoryDocumentInput> documents { get; set; }
     
       /// <summary>
@@ -299,6 +302,9 @@ namespace Criipto.Signatures.Models {
     #region ChangeSignatoryInput
     public class ChangeSignatoryInput {
       #region members
+      /// <summary>
+      /// Define a subset of documents for the signatory. Must be a non-empty list. Leave null for all documents.
+      /// </summary>
       public List<SignatoryDocumentInput> documents { get; set; }
     
       /// <summary>
@@ -675,6 +681,9 @@ namespace Criipto.Signatures.Models {
     #region CreateSignatureOrderSignatoryInput
     public class CreateSignatureOrderSignatoryInput {
       #region members
+      /// <summary>
+      /// Define a subset of documents for the signatory. Must be a non-empty list. Leave null for all documents.
+      /// </summary>
       public List<SignatoryDocumentInput> documents { get; set; }
     
       /// <summary>
@@ -1178,6 +1187,16 @@ namespace Criipto.Signatures.Models {
     /// </summary>
     public class DrawableEvidenceProviderInput {
       #region members
+      /// <summary>
+      /// Required minimum height of drawed area in pixels.
+      /// </summary>
+      public int? minimumHeight { get; set; }
+    
+      /// <summary>
+      /// Required minimum width of drawed area in pixels.
+      /// </summary>
+      public int? minimumWidth { get; set; }
+    
       public bool? requireName { get; set; }
       #endregion
     
@@ -1225,6 +1244,12 @@ namespace Criipto.Signatures.Models {
       #region members
       [JsonProperty("id")]
       public string id { get; set; }
+    
+      [JsonProperty("minimumHeight")]
+      public int? minimumHeight { get; set; }
+    
+      [JsonProperty("minimumWidth")]
+      public int? minimumWidth { get; set; }
     
       [JsonProperty("requireName")]
       public bool requireName { get; set; }
