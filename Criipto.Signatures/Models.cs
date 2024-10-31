@@ -603,7 +603,12 @@ namespace Criipto.Signatures.Models {
       public List<EvidenceValidationStage> evidenceValidationStages { get; set; }
     
       /// <summary>
-      /// When this signature order will auto-close/expire. Default 90 days.
+      /// When this signature order will auto-close/expire at exactly in one of the following ISO-8601 formats: yyyy-MM-ddTHH:mm:ssZ, yyyy-MM-ddTHH:mm:ss.ffZ, yyyy-MM-ddTHH:mm:ss.fffZ, yyyy-MM-ddTHH:mm:ssK, yyyy-MM-ddTHH:mm:ss.ffK, yyyy-MM-ddTHH:mm:ss.fffK. Cannot be provided with `expiresInDays`.
+      /// </summary>
+      public string expiresAt { get; set; }
+    
+      /// <summary>
+      /// When this signature order will auto-close/expire. Default 90 days. Cannot be provided with `expiresAt`
       /// </summary>
       public int? expiresInDays { get; set; }
     
@@ -2718,6 +2723,8 @@ namespace Criipto.Signatures.Models {
     public class SignatureAppearanceInput {
       #region members
       public List<SignatureAppearanceTemplateInput> displayName { get; set; }
+    
+      public List<SignatureAppearanceTemplateInput> footer { get; set; }
     
       public List<SignatureAppearanceTemplateInput> headerLeft { get; set; }
     
