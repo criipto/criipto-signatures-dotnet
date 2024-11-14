@@ -755,6 +755,11 @@ namespace Criipto.Signatures.Models {
       public SignatureOrderUiLogoInput logo { get; set; }
     
       /// <summary>
+      /// Renders a UI layer for PDF annotations, such as links, making them interactive in the UI/browser
+      /// </summary>
+      public bool? renderPdfAnnotationLayer { get; set; }
+    
+      /// <summary>
       /// The signatory will be redirected to this URL after signing or rejected the signature order.
       /// </summary>
       public string signatoryRedirectUri { get; set; }
@@ -2960,6 +2965,9 @@ namespace Criipto.Signatures.Models {
     
       [JsonProperty("logo")]
       public SignatureOrderUILogo logo { get; set; }
+    
+      [JsonProperty("renderPdfAnnotationLayer")]
+      public bool renderPdfAnnotationLayer { get; set; }
     
       [JsonProperty("signatoryRedirectUri")]
       public string signatoryRedirectUri { get; set; }
