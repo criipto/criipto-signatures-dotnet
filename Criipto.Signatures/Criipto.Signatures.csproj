@@ -9,6 +9,8 @@
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
         <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
         <AnalysisMode>All</AnalysisMode>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NoWarn>CS1591</NoWarn>
 
         <PackageId>Criipto.Signatures</PackageId>
         <Version>1.16.0</Version>

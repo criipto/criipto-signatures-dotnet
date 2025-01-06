@@ -1,4 +1,5 @@
 ﻿#pragma warning disable CA1062
+#pragma warning disable CA1854
 
 using System.Collections;
 using System.Collections.Generic;
