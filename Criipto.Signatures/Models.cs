@@ -104,6 +104,11 @@ namespace Criipto.Signatures.Models {
       [Required]
       [JsonRequired]
       public string signatureOrderId { get; set; }
+    
+      /// <summary>
+      /// Override UI settings for signatory, defaults to UI settings for signature order
+      /// </summary>
+      public SignatoryUiInput ui { get; set; }
       #endregion
     
       #region methods
@@ -329,6 +334,11 @@ namespace Criipto.Signatures.Models {
       public string signatoryId { get; set; }
     
       public SignatureAppearanceInput signatureAppearance { get; set; }
+    
+      /// <summary>
+      /// Override UI settings for signatory, defaults to UI settings for signature order
+      /// </summary>
+      public SignatoryUiInput ui { get; set; }
       #endregion
     
       #region methods
@@ -709,6 +719,11 @@ namespace Criipto.Signatures.Models {
       public string role { get; set; }
     
       public SignatureAppearanceInput signatureAppearance { get; set; }
+    
+      /// <summary>
+      /// Override UI settings for signatory, defaults to UI settings for signature order
+      /// </summary>
+      public SignatoryUiInput ui { get; set; }
       #endregion
     
       #region methods
@@ -797,6 +812,11 @@ namespace Criipto.Signatures.Models {
     #region CreateSignatureOrderWebhookInput
     public class CreateSignatureOrderWebhookInput {
       #region members
+      /// <summary>
+      /// If defined, webhook invocations will have a X-Criipto-Signature header containing a HMAC-SHA256 signature (as a base64 string) of the webhook request body (utf-8). The secret should be between 256 and 512 bits.
+      /// </summary>
+      public byte[] secret { get; set; }
+    
       /// <summary>
       /// Webhook url. POST requests will be executed towards this URL on certain signatory events.
       /// </summary>
@@ -2436,6 +2456,9 @@ namespace Criipto.Signatures.Models {
       /// </summary>
       [JsonProperty("token")]
       public string token { get; set; }
+    
+      [JsonProperty("ui")]
+      public SignatureOrderUI ui { get; set; }
       #endregion
     }
     #endregion
@@ -2657,6 +2680,65 @@ namespace Criipto.Signatures.Models {
       FUTURE_ADDED_VALUE = 999
     }
     
+    
+    #region SignatoryUiInput
+    public class SignatoryUiInput {
+      #region members
+      /// <summary>
+      /// Removes the UI options to reject a document or signature order.
+      /// </summary>
+      public bool? disableRejection { get; set; }
+    
+      /// <summary>
+      /// The language of texts rendered to the signatory.
+      /// </summary>
+      [JsonConverter(typeof(TolerantEnumConverter))]
+      public Language? language { get; set; }
+    
+      /// <summary>
+      /// Define a logo to be shown in the signatory UI.
+      /// </summary>
+      public SignatureOrderUiLogoInput logo { get; set; }
+    
+      /// <summary>
+      /// Renders a UI layer for PDF annotations, such as links, making them interactive in the UI/browser
+      /// </summary>
+      public bool? renderPdfAnnotationLayer { get; set; }
+    
+      /// <summary>
+      /// The signatory will be redirected to this URL after signing or rejected the signature order.
+      /// </summary>
+      public string signatoryRedirectUri { get; set; }
+    
+      /// <summary>
+      /// Add stylesheet/css via an absolute HTTPS URL.
+      /// </summary>
+      public string stylesheet { get; set; }
+      #endregion
+    
+      #region methods
+      public dynamic GetInputObject()
+      {
+        IDictionary<string, object> d = new System.Dynamic.ExpandoObject();
+    
+        var properties = GetType().GetProperties(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+        foreach (var propertyInfo in properties)
+        {
+          var value = propertyInfo.GetValue(this);
+          var defaultValue = propertyInfo.PropertyType.IsValueType ? Activator.CreateInstance(propertyInfo.PropertyType) : null;
+    
+          var requiredProp = propertyInfo.GetCustomAttributes(typeof(JsonRequiredAttribute), false).Length > 0;
+    
+          if (requiredProp || value != defaultValue)
+          {
+            d[propertyInfo.Name] = value;
+          }
+        }
+        return d;
+      }
+      #endregion
+    }
+    #endregion
     
     #region SignatoryViewer
     public class SignatoryViewer : Viewer {
