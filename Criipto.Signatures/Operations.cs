@@ -767,6 +767,91 @@ namespace Criipto.Signatures {
     }
     
 
+    public class CreateBatchSignatoryMutation {
+      /// <summary>
+      /// CreateBatchSignatoryMutation.Request 
+      /// <para>Required variables:<br/> { input=(CreateBatchSignatoryInput) }</para>
+      /// <para>Optional variables:<br/> {  }</para>
+      /// </summary>
+      public static GraphQLRequest Request(object variables = null) {
+        return new GraphQLRequest {
+          Query = CreateBatchSignatoryDocument,
+          OperationName = "createBatchSignatory",
+          Variables = variables
+        };
+      }
+
+      /// <remarks>This method is obsolete. Use Request instead.</remarks>
+      public static GraphQLRequest getCreateBatchSignatoryMutation() {
+        return Request();
+      }
+      
+      public static string CreateBatchSignatoryDocument = @"
+        mutation createBatchSignatory($input: CreateBatchSignatoryInput!) {
+          createBatchSignatory(input: $input) {
+            batchSignatory {
+              ...BasicBatchSignatory
+              items {
+                signatureOrder {
+                  ...BasicSignatureOrder
+                }
+                signatory {
+                  ...BasicSignatory
+                }
+              }
+            }
+          }
+        }
+        fragment BasicSignatory on Signatory {
+          id
+          status
+          statusReason
+          href
+          downloadHref
+          reference
+          role
+          signatureOrder {
+            id
+            status
+            closedAt
+            expiresAt
+          }
+          evidenceProviders {
+            __typename
+            id
+          }
+          documents {
+            edges {
+              status
+              node {
+                __typename
+                id
+              }
+            }
+          }
+        }
+        fragment BasicSignatureOrder on SignatureOrder {
+          id
+          status
+          closedAt
+          expiresAt
+          signatories {
+            ...BasicSignatory
+          }
+          evidenceProviders {
+            __typename
+            id
+          }
+        }
+        fragment BasicBatchSignatory on BatchSignatory {
+          id
+          token
+          href
+        }";
+      
+    }
+    
+
     public class SignatureOrderQuery {
       /// <summary>
       /// SignatureOrderQuery.Request 
@@ -998,6 +1083,89 @@ namespace Criipto.Signatures {
             __typename
             id
           }
+        }";
+      
+    }
+    
+
+    public class BatchSignatoryQuery {
+      /// <summary>
+      /// BatchSignatoryQuery.Request 
+      /// <para>Required variables:<br/> { id=(string) }</para>
+      /// <para>Optional variables:<br/> {  }</para>
+      /// </summary>
+      public static GraphQLRequest Request(object variables = null) {
+        return new GraphQLRequest {
+          Query = BatchSignatoryDocument,
+          OperationName = "batchSignatory",
+          Variables = variables
+        };
+      }
+
+      /// <remarks>This method is obsolete. Use Request instead.</remarks>
+      public static GraphQLRequest getBatchSignatoryQuery() {
+        return Request();
+      }
+      
+      public static string BatchSignatoryDocument = @"
+        query batchSignatory($id: ID!) {
+          batchSignatory(id: $id) {
+            ...BasicBatchSignatory
+            items {
+              signatureOrder {
+                ...BasicSignatureOrder
+              }
+              signatory {
+                ...BasicSignatory
+              }
+            }
+          }
+        }
+        fragment BasicSignatory on Signatory {
+          id
+          status
+          statusReason
+          href
+          downloadHref
+          reference
+          role
+          signatureOrder {
+            id
+            status
+            closedAt
+            expiresAt
+          }
+          evidenceProviders {
+            __typename
+            id
+          }
+          documents {
+            edges {
+              status
+              node {
+                __typename
+                id
+              }
+            }
+          }
+        }
+        fragment BasicSignatureOrder on SignatureOrder {
+          id
+          status
+          closedAt
+          expiresAt
+          signatories {
+            ...BasicSignatory
+          }
+          evidenceProviders {
+            __typename
+            id
+          }
+        }
+        fragment BasicBatchSignatory on BatchSignatory {
+          id
+          token
+          href
         }";
       
     }

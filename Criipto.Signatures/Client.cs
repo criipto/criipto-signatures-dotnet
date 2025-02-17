@@ -171,6 +171,18 @@ public class CriiptoSignaturesClient : IDisposable
         return await AddSignatories(input).ConfigureAwait(false);
     }
 
+    public async Task<BatchSignatory> CreateBatchSignatory(CreateBatchSignatoryInput input)
+    {
+        if (input == null) throw new ArgumentNullException(nameof(input));
+
+        var data = await SendMutation(
+            CreateBatchSignatoryMutation.Request(new { input = input }),
+            () => new { createBatchSignatory = new CreateBatchSignatoryOutput() }
+        ).ConfigureAwait(false);
+
+        return data.createBatchSignatory.batchSignatory;
+    }
+
     public async Task<Signatory> ChangeSignatory(ChangeSignatoryInput input)
     {
         var data = await SendMutation(
@@ -428,5 +440,22 @@ public class CriiptoSignaturesClient : IDisposable
         }
 
         return response.Data.signatory;
+    }
+
+    public async Task<BatchSignatory?> QueryBatchSignatory(string batchSignatoryId)
+    {
+        if (batchSignatoryId == null) throw new ArgumentNullException(nameof(batchSignatoryId));
+
+        var request = BatchSignatoryQuery.Request(new { id = batchSignatoryId });
+
+        var response = await graphQLClient.SendQueryAsync<Query>(request)
+            .ConfigureAwait(false);
+
+        if (response.Errors?.Length > 0)
+        {
+            throw new GraphQLException(response.Errors[0].Message);
+        }
+
+        return response.Data.batchSignatory;
     }
 }

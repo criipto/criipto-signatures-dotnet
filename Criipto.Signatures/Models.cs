@@ -263,6 +263,110 @@ namespace Criipto.Signatures.Models {
     }
     
     
+    #region BatchSignatory
+    public class BatchSignatory {
+      #region members
+      [JsonProperty("href")]
+      public string href { get; set; }
+    
+      [JsonProperty("id")]
+      public string id { get; set; }
+    
+      [JsonProperty("items")]
+      public List<BatchSignatoryItem> items { get; set; }
+    
+      /// <summary>
+      /// The authentication token required for performing batch operations.
+      /// </summary>
+      [JsonProperty("token")]
+      public string token { get; set; }
+    
+      [JsonProperty("ui")]
+      public SignatureOrderUI ui { get; set; }
+      #endregion
+    }
+    #endregion
+    
+    #region BatchSignatoryItem
+    public class BatchSignatoryItem {
+      #region members
+      [JsonProperty("signatory")]
+      public Signatory signatory { get; set; }
+    
+      [JsonProperty("signatureOrder")]
+      public SignatureOrder signatureOrder { get; set; }
+      #endregion
+    }
+    #endregion
+    
+    #region BatchSignatoryItemInput
+    public class BatchSignatoryItemInput {
+      #region members
+      [Required]
+      [JsonRequired]
+      public string signatoryId { get; set; }
+    
+      [Required]
+      [JsonRequired]
+      public string signatureOrderId { get; set; }
+      #endregion
+    
+      #region methods
+      public dynamic GetInputObject()
+      {
+        IDictionary<string, object> d = new System.Dynamic.ExpandoObject();
+    
+        var properties = GetType().GetProperties(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+        foreach (var propertyInfo in properties)
+        {
+          var value = propertyInfo.GetValue(this);
+          var defaultValue = propertyInfo.PropertyType.IsValueType ? Activator.CreateInstance(propertyInfo.PropertyType) : null;
+    
+          var requiredProp = propertyInfo.GetCustomAttributes(typeof(JsonRequiredAttribute), false).Length > 0;
+    
+          if (requiredProp || value != defaultValue)
+          {
+            d[propertyInfo.Name] = value;
+          }
+        }
+        return d;
+      }
+      #endregion
+    }
+    #endregion
+    
+    #region BatchSignatoryViewer
+    public class BatchSignatoryViewer : Viewer {
+      #region members
+      [JsonProperty("authenticated")]
+      public bool authenticated { get; set; }
+    
+      [JsonProperty("batchSignatoryId")]
+      public string batchSignatoryId { get; set; }
+    
+      [JsonProperty("documents")]
+      public SignatoryDocumentConnection documents { get; set; }
+    
+      [JsonProperty("evidenceProviders")]
+      [JsonConverter(typeof(CompositionTypeListConverter))]
+      public List<SignatureEvidenceProvider> evidenceProviders { get; set; }
+    
+      [JsonProperty("id")]
+      public string id { get; set; }
+    
+      [JsonProperty("signer")]
+      public bool signer { get; set; }
+    
+      [JsonProperty("status")]
+      [JsonConverter(typeof(TolerantEnumConverter))]
+      public SignatoryStatus status { get; set; }
+    
+      [JsonProperty("ui")]
+      public SignatureOrderUI ui { get; set; }
+      #endregion
+    }
+    #endregion
+    
     #region CancelSignatureOrderInput
     public class CancelSignatureOrderInput {
       #region members
@@ -586,6 +690,52 @@ namespace Criipto.Signatures.Models {
     
       [JsonProperty("tenant")]
       public Tenant tenant { get; set; }
+      #endregion
+    }
+    #endregion
+    
+    #region CreateBatchSignatoryInput
+    public class CreateBatchSignatoryInput {
+      #region members
+      [Required]
+      [JsonRequired]
+      public List<BatchSignatoryItemInput> items { get; set; }
+    
+      /// <summary>
+      /// UI settings for batch signatory, will use defaults otherwise (will not use UI settings from sub signatories)
+      /// </summary>
+      public SignatoryUiInput ui { get; set; }
+      #endregion
+    
+      #region methods
+      public dynamic GetInputObject()
+      {
+        IDictionary<string, object> d = new System.Dynamic.ExpandoObject();
+    
+        var properties = GetType().GetProperties(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+        foreach (var propertyInfo in properties)
+        {
+          var value = propertyInfo.GetValue(this);
+          var defaultValue = propertyInfo.PropertyType.IsValueType ? Activator.CreateInstance(propertyInfo.PropertyType) : null;
+    
+          var requiredProp = propertyInfo.GetCustomAttributes(typeof(JsonRequiredAttribute), false).Length > 0;
+    
+          if (requiredProp || value != defaultValue)
+          {
+            d[propertyInfo.Name] = value;
+          }
+        }
+        return d;
+      }
+      #endregion
+    }
+    #endregion
+    
+    #region CreateBatchSignatoryOutput
+    public class CreateBatchSignatoryOutput {
+      #region members
+      [JsonProperty("batchSignatory")]
+      public BatchSignatory batchSignatory { get; set; }
       #endregion
     }
     #endregion
@@ -1325,7 +1475,7 @@ namespace Criipto.Signatures.Models {
       public NoopEvidenceProviderInput noop { get; set; }
     
       /// <summary>
-      /// OIDC/JWT based evidence for signatures.
+      /// Deprecated
       /// </summary>
       public OidcEvidenceProviderInput oidc { get; set; }
       #endregion
@@ -1484,6 +1634,9 @@ namespace Criipto.Signatures.Models {
       /// </summary>
       [JsonProperty("createApplicationApiKey")]
       public CreateApplicationApiKeyOutput createApplicationApiKey { get; set; }
+    
+      [JsonProperty("createBatchSignatory")]
+      public CreateBatchSignatoryOutput createBatchSignatory { get; set; }
     
       /// <summary>
       /// Creates a signature order to be signed.
@@ -1812,6 +1965,12 @@ namespace Criipto.Signatures.Models {
       [JsonProperty("blob")]
       public byte[] blob { get; set; }
     
+      /// <summary>
+      /// Same value as stamped on document when using displayDocumentID
+      /// </summary>
+      [JsonProperty("documentID")]
+      public string documentID { get; set; }
+    
       [JsonProperty("form")]
       public PdfDocumentForm form { get; set; }
     
@@ -1892,6 +2051,9 @@ namespace Criipto.Signatures.Models {
       #region members
       [JsonProperty("application")]
       public Application application { get; set; }
+    
+      [JsonProperty("batchSignatory")]
+      public BatchSignatory batchSignatory { get; set; }
     
       [JsonProperty("document")]
       [JsonConverter(typeof(CompositionTypeConverter))]
@@ -2601,7 +2763,7 @@ namespace Criipto.Signatures.Models {
       public NoopEvidenceProviderInput noop { get; set; }
     
       /// <summary>
-      /// OIDC/JWT based evidence for signatures.
+      /// Deprecated
       /// </summary>
       public OidcEvidenceProviderInput oidc { get; set; }
       #endregion
@@ -3147,7 +3309,7 @@ namespace Criipto.Signatures.Models {
       public NoopEvidenceProviderInput noop { get; set; }
     
       /// <summary>
-      /// OIDC/JWT based evidence for signatures.
+      /// Deprecated
       /// </summary>
       public OidcEvidenceProviderInput oidc { get; set; }
       #endregion
